@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FBP Engine · Diccionario de Datos COMEX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f4f8fc; --surface:#fff; --text:#17324d; --muted:#6a7f92;
+      --border:#d9e4ef; --brand:#2f6fb5; --brand-dark:#1b4d80;
+      --brand-soft:#eef6ff; --sidebar-bg:#f7fbff;
+      --shadow:0 8px 28px rgba(24,55,88,.08);
+      --shadow-md:0 12px 34px rgba(24,55,88,.13);
+      --r-xl:20px; --r-lg:16px; --r-md:12px; --t:.15s ease;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;color:var(--text);
+      background:radial-gradient(circle at top left,rgba(94,159,225,.09),transparent 26%),
+      linear-gradient(180deg,#f9fbff 0%,var(--bg) 100%);}
+    a{color:inherit;text-decoration:none;}
+
+    .app{display:grid;grid-template-columns:288px 1fr;min-height:100vh;}
+
+    /* sidebar */
+    .sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 12px 24px;
+      background:var(--sidebar-bg);border-right:1px solid rgba(217,228,239,.85);
+      display:flex;flex-direction:column;}
+    .sidebar::-webkit-scrollbar{width:4px;}
+    .sidebar::-webkit-scrollbar-thumb{background:#c5d8ee;border-radius:4px;}
+
+    .brand{display:flex;align-items:center;gap:11px;padding:4px 4px 16px;margin-bottom:10px;border-bottom:1px solid var(--border);}
+    .brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+      background:linear-gradient(145deg,#3d82c4,var(--brand-dark));color:#fff;flex-shrink:0;
+      box-shadow:0 5px 15px rgba(27,77,128,.26);}
+    .brand small{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:1px;}
+    .brand strong{font-size:15px;letter-spacing:-.02em;}
+
+    .back-link{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:10px;
+      font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:14px;
+      transition:background var(--t),color var(--t);}
+    .back-link:hover{background:#fff;color:var(--brand-dark);}
+
+    .s-title{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+      color:var(--muted);padding:0 8px;margin-bottom:6px;margin-top:4px;}
+
+    .mod-section{margin-bottom:14px;}
+    .mod-hdr{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;
+      font-size:12.5px;font-weight:700;color:var(--text);cursor:pointer;user-select:none;
+      transition:background var(--t);}
+    .mod-hdr:hover{background:rgba(255,255,255,.7);}
+    .mod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+    .tbl-group{display:grid;gap:1px;padding-left:14px;margin-left:14px;
+      border-left:2px solid #dce9f5;margin-top:2px;}
+    .tbl-link{display:flex;align-items:center;justify-content:space-between;
+      padding:7px 10px;border-radius:9px;font-size:12.5px;font-weight:600;color:var(--muted);
+      cursor:pointer;border-left:2px solid transparent;
+      transition:background var(--t),color var(--t);}
+    .tbl-link:hover{background:rgba(255,255,255,.8);color:var(--text);}
+    .tbl-link.active{background:#fff;color:var(--brand-dark);border-left-color:var(--brand);
+      box-shadow:0 3px 10px rgba(47,111,181,.09);}
+    .tbl-badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;
+      background:#e8f0f9;color:var(--brand-dark);flex-shrink:0;}
+    .tbl-link.active .tbl-badge{background:var(--brand-soft);}
+
+    /* main */
+    .main{min-width:0;}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      background:rgba(248,251,255,.92);border-bottom:1px solid rgba(217,228,239,.85);}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 28px;}
+    .breadcrumb{font-size:13px;color:var(--muted);font-weight:500;}
+    .breadcrumb span{color:var(--text);font-weight:600;}
+    .top-stats{display:flex;gap:10px;align-items:center;}
+    .stat-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;
+      font-size:12px;font-weight:600;border:1px solid #d7e4f3;background:#fff;color:var(--brand-dark);}
+
+    /* content */
+    .content{padding:28px 32px 48px;}
+
+    /* overview */
+    .ov-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);
+      box-shadow:var(--shadow);padding:26px 30px;margin-bottom:22px;
+      display:flex;align-items:flex-start;gap:22px;}
+    .prod-icon{width:54px;height:54px;border-radius:16px;
+      background:linear-gradient(145deg,#3d82c4,var(--brand-dark));
+      display:grid;place-items:center;color:#fff;flex-shrink:0;
+      box-shadow:0 6px 18px rgba(27,77,128,.25);}
+    .ov-hero h1{font-size:24px;letter-spacing:-.025em;margin-bottom:6px;}
+    .ov-hero p{color:var(--muted);font-size:13.5px;line-height:1.6;margin-bottom:14px;}
+    .pills{display:flex;flex-wrap:wrap;gap:8px;}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;
+      font-size:12px;font-weight:700;border:1px solid #d7e4f3;background:#f5faff;color:var(--brand-dark);}
+
+    .mods-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    .mod-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);
+      box-shadow:var(--shadow);overflow:hidden;cursor:pointer;
+      transition:box-shadow var(--t),transform var(--t);}
+    .mod-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+    .mod-card-head{padding:15px 20px;color:#fff;font-size:14px;font-weight:700;}
+    .mod-card-body{padding:16px 20px;}
+    .mod-card-body p{color:var(--muted);font-size:13px;margin-bottom:12px;}
+    .tbls-mini{display:grid;gap:5px;}
+    .tbl-mini{display:flex;justify-content:space-between;align-items:center;
+      padding:7px 10px;border-radius:9px;background:#f8fbff;border:1px solid var(--border);
+      font-size:12.5px;cursor:pointer;transition:background var(--t),border-color var(--t);}
+    .tbl-mini:hover{background:var(--brand-soft);border-color:#b0ccec;}
+    .tbl-mini strong{font-weight:700;}
+    .tbl-mini span{color:var(--muted);font-size:11.5px;}
+
+    /* table view */
+    .tv-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px;}
+    .tv-meta h2{font-size:22px;letter-spacing:-.02em;margin-bottom:4px;}
+    .tv-meta p{color:var(--muted);font-size:13px;}
+    .tv-actions{display:flex;gap:10px;align-items:center;}
+    .search-box{display:flex;align-items:center;gap:8px;padding:9px 13px;border-radius:12px;
+      border:1px solid var(--border);background:#fff;
+      box-shadow:0 2px 8px rgba(24,55,88,.06);width:260px;}
+    .search-box svg{color:var(--muted);flex-shrink:0;}
+    .search-box input{border:none;outline:none;background:transparent;font-size:13px;
+      font-family:inherit;color:var(--text);width:100%;}
+    .search-box input::placeholder{color:var(--muted);}
+    .cnt-badge{padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;
+      background:var(--brand-soft);color:var(--brand-dark);border:1px solid #c0d8ef;white-space:nowrap;}
+
+    .dt-wrap{background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--r-xl);box-shadow:var(--shadow);overflow:hidden;}
+    .dt{width:100%;border-collapse:collapse;}
+    .dt th{text-align:left;padding:11px 14px;font-size:10.5px;font-weight:700;
+      text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+      background:#f5f9fc;border-bottom:1px solid var(--border);}
+    .dt td{padding:11px 14px;font-size:13px;border-bottom:1px solid #eef4f9;vertical-align:middle;}
+    .dt tr:last-child td{border-bottom:none;}
+    .dt tr.hidden{display:none;}
+    .dt tbody tr{transition:background var(--t);}
+    .dt tbody tr:hover td{background:#f5f9ff;}
+    .num-c{color:var(--muted);font-size:12px;font-weight:500;width:44px;}
+    .col-name{font-family:'SFMono-Regular','Fira Mono',Consolas,monospace;font-size:12.5px;
+      font-weight:600;color:var(--brand-dark);background:#f0f6ff;
+      padding:3px 8px;border-radius:6px;display:inline-block;}
+    .type-tag{display:inline-block;padding:3px 9px;border-radius:7px;font-size:11.5px;
+      font-weight:700;font-family:'SFMono-Regular',Consolas,monospace;border:1px solid;white-space:nowrap;}
+    .tc-char{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
+    .tc-varchar{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
+    .tc-numeric{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;}
+    .tc-decimal{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;}
+    .tc-money{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;}
+    .tc-datetime{background:#faf5ff;color:#7c3aed;border-color:#e9d5ff;}
+    .tc-date{background:#faf5ff;color:#7c3aed;border-color:#e9d5ff;}
+    .tc-int{background:#fffbeb;color:#b45309;border-color:#fde68a;}
+    .tc-smallint{background:#fffbeb;color:#b45309;border-color:#fde68a;}
+    .tc-tinyint{background:#fffbeb;color:#b45309;border-color:#fde68a;}
+    .tc-bigint{background:#fffbeb;color:#b45309;border-color:#fde68a;}
+    .tc-bit{background:#fdf4ff;color:#a21caf;border-color:#f5d0fe;}
+    .tc-float{background:#f0fdfa;color:#0f766e;border-color:#99f6e4;}
+    .tc-real{background:#f0fdfa;color:#0f766e;border-color:#99f6e4;}
+    .tc-other{background:#f1f5f9;color:#475569;border-color:#cbd5e1;}
+    .desc-c{color:#334155;font-size:13px;line-height:1.5;}
+    .desc-empty{color:#94a3b8;font-style:italic;font-size:12px;}
+    .no-results{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
+
+    .footer{margin-top:40px;padding:18px 0 0;border-top:1px solid var(--border);
+      display:flex;justify-content:space-between;align-items:center;
+      color:var(--muted);font-size:12px;flex-wrap:wrap;gap:10px;}
+
+    @media(max-width:960px){
+      .app{grid-template-columns:1fr;}
+      .sidebar{position:relative;height:auto;}
+      .mods-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+        </svg>
+      </div>
+      <div><small>Diccionario de Datos</small><strong>FBP Engine</strong></div>
+    </div>
+    <a class="back-link" href="data_office_portal - Sidebar (1).html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver al portal
+    </a>
+    <p class="s-title">Módulos y tablas</p>
+    <div id="sidebar-nav"></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="breadcrumb">Data Office / FBP Engine / <span>Diccionario de Datos</span></div>
+        <div class="top-stats">
+          <span class="stat-pill">18 tablas</span>
+          <span class="stat-pill">487 campos</span>
+          <span class="stat-pill">3 módulos</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div id="view-overview">
+        <div class="ov-hero">
+          <div class="prod-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <div>
+            <h1>FBP Engine · Comercio Exterior (COMEX)</h1>
+            <p>Diccionario técnico del producto de datos COMEX. Contiene la estructura completa de las 18 tablas del sistema FBP Engine, organizado en tres módulos: Compra-Venta-Arbitraje, Órdenes de Pago Individual y Colocaciones.</p>
+            <div class="pills">
+              <span class="pill">Comercio Exterior</span>
+              <span class="pill">Liquidaciones</span>
+              <span class="pill">Órdenes de Pago</span>
+              <span class="pill">Colocaciones</span>
+              <span class="pill">18 tablas · 487 campos</span>
+            </div>
+          </div>
+        </div>
+        <div class="mods-grid" id="ov-modules"></div>
+      </div>
+
+      <div id="view-table" style="display:none">
+        <div class="tv-hdr">
+          <div class="tv-meta">
+            <h2 id="tv-title"></h2>
+            <p id="tv-sub"></p>
+          </div>
+          <div class="tv-actions">
+            <div class="search-box">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="search-input" placeholder="Buscar campo…" oninput="filterTable(this.value)">
+            </div>
+            <span class="cnt-badge" id="field-count"></span>
+          </div>
+        </div>
+        <div class="dt-wrap">
+          <table class="dt">
+            <thead><tr><th>#</th><th>Nombre de columna</th><th>Tipo</th><th>Descripción</th></tr></thead>
+            <tbody id="tbl-body"></tbody>
+          </table>
+          <div id="no-results" class="no-results" style="display:none">Sin resultados.</div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>Data Office · FBP Engine Diccionario de Datos</span>
+        <span>Fuente: Diccionario de datos FBP Engine.xlsx</span>
+        <span>v1.1 · Mayo 2025</span>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+const MODS = [
+  {
+    id:"cva", label:"Compra, Venta y Arbitraje", color:"#2f6fb5",
+    desc:"Liquidaciones de operaciones de compra, venta y arbitraje de divisas.",
+    tables:[
+      { id:"LIQOPR", label:"LIQOPR", desc:"Liquidación de órdenes de pago", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_liq_ori","varchar(16)","Número de liquidación de origen"],
+        [3,"fld_opr_num_grp","varchar(16)","Número de liquidación agrupadora"],
+        [4,"fld_opr_ind_grp","char(1)","Indicador de liquidación agrupadora S=Si N=No"],
+        [5,"fld_opr_ofi","smallint","Sucursal"],
+        [6,"fld_opr_usr","varchar(20)","Usuario ingresador"],
+        [7,"fld_opr_fec_ing","datetime","Fecha de ingreso"],
+        [8,"fld_opr_fec_cont","datetime","Fecha de contabilización"],
+        [9,"fld_opr_tip_liq","char(1)","Indicador de tipo de liquidación: R=Retorno, C=Compra, V=Venta, J=Canje"],
+        [10,"fld_opr_ope_ori","varchar(16)","Número de operación origen"],
+        [11,"fld_opr_ope_ori_corr","smallint","Número de correlativo asociado a operación de origen"],
+        [12,"fld_opr_tpo_ope","varchar(5)","Tipo de operación"],
+        [13,"fld_opr_cod_cli","varchar(11)","Código del cliente"],
+        [14,"fld_opr_ref_ope","varchar(35)","Referencia de la operación"],
+        [15,"fld_opr_mon","char(3)","Moneda ISO de la operación"],
+        [16,"fld_opr_mto_ope","numeric(16,2)","Monto de la operación"],
+        [17,"fld_opr_mto_liq","numeric(16,2)","Monto liquidado"],
+        [18,"fld_opr_des_com","tinyint","Descuento de comisiones: 0=No, 1=MN, 2=MX"],
+        [19,"fld_opr_tip_cam","numeric(17,9)","Tipo de cambio"]
+      ]},
+      { id:"LIQORI", label:"LIQORI", desc:"Origen de fondos – Liquidación", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_ori_num","smallint","Número origen de fondos"],
+        [3,"fld_ori_cod","smallint","Código de origen de fondos"],
+        [4,"fld_ori_cta_cte","varchar(16)","Cuenta corriente"],
+        [5,"fld_ori_mto","numeric(16,2)","Monto"],
+        [6,"fld_ori_nro_ref","varchar(16)","Número de referencia origen de fondos"],
+        [7,"fld_ori_bic_corr","char(11)","Código BIC Banco Corresponsal"],
+        [8,"fld_ori_pai","char(2)","Código ISO País"],
+        [9,"fld_ori_ofi","smallint","Sucursal"],
+        [10,"fld_ori_cod_cmb","char(5)","Código de cambio"],
+        [11,"fld_ori_gpl_obs","varchar(198)","Observaciones normativas"]
+      ]},
+      { id:"LIQDES", label:"LIQDES", desc:"Destino de fondos – Liquidación", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_des_num_ben","smallint","Correlativo destino de fondos"],
+        [3,"fld_des_suc_ben","smallint","Sucursal"],
+        [4,"fld_des_cod_cmb","varchar(5)","Código de cambio"],
+        [5,"fld_des_ben_liq_gen","varchar(16)","Liquidación generadora"],
+        [6,"fld_des_cod_ben","varchar(11)","Código de beneficiario"],
+        [7,"fld_des_nom_ben","varchar(40)","Nombre del beneficiario"],
+        [8,"fld_des_dir1_ben","varchar(255)","Dirección 1 beneficiario"],
+        [9,"fld_des_dir2_ben","varchar(255)","Dirección 2 beneficiario"],
+        [10,"fld_des_dir3_ben","varchar(255)","Dirección 3 beneficiario"],
+        [11,"fld_des_dir4_ben","varchar(255)","Dirección 4 beneficiario"],
+        [12,"fld_des_ciu_ben","varchar(35)","Ciudad beneficiario"],
+        [13,"fld_des_pai_ben","char(2)","País beneficiario"],
+        [14,"fld_des_cta_cte","varchar(16)","Cuenta corriente"],
+        [15,"fld_des_ben_ref","varchar(35)","Referencia beneficiario"],
+        [16,"fld_des_ben_dfd","tinyint","Código destino de fondos"],
+        [17,"fld_des_mto_ben","numeric(16,2)","Monto destino de fondos – moneda de liquidación"],
+        [18,"fld_des_ben_mto_arb","numeric(16,2)","Monto destino de fondos – moneda final"],
+        [19,"fld_des_ind_mto_ben","bit","Indicador monto beneficiario"],
+        [20,"fld_des_mon_ben","char(3)","Código ISO moneda destino de fondos"],
+        [21,"fld_des_par_ben","float(53)","Paridad"],
+        [22,"fld_des_ben_cor","char(11)","Código BIC Banco Corresponsal"],
+        [23,"fld_des_ben_chq","varchar(16)","Número de cheque"],
+        [24,"fld_des_chq_idi","char(1)","Identificador cheque"],
+        [25,"fld_des_ben_num_col","varchar(16)","Número de colocación"],
+        [26,"fld_des_ben_opa","tinyint","Indicador de asociación"],
+        [27,"fld_des_ben_fec_val","datetime","Fecha valor"],
+        [28,"fld_des_nom_ben_op","varchar(40)","Nombre beneficiario Orden de Pago"],
+        [29,"fld_des_ben_cta_cte","varchar(34)","Cuenta beneficiario"],
+        [30,"fld_des_dir_ben_op","varchar(255)","Dirección beneficiario Orden de Pago"],
+        [31,"fld_des_ciu_ben_op","varchar(35)","Ciudad beneficiario Orden de Pago"],
+        [32,"fld_des_pai_ben_op","char(2)","País beneficiario Orden de Pago"],
+        [33,"fld_des_ref_ben_op","varchar(140)","Referencia beneficiario Orden de Pago"],
+        [34,"fld_des_ben_ad","char(1)","Opción Banco del beneficiario: A=57A, D=57D"],
+        [35,"fld_des_bco_ben","char(11)","Código BIC Banco del beneficiario"],
+        [36,"fld_des_ben_fw","varchar(9)","Banco del beneficiario (ABA)"],
+        [37,"fld_des_bbn_nomb","varchar(35)","Nombre Banco del beneficiario"],
+        [38,"fld_des_bbn_ciu","varchar(35)","Ciudad del Beneficiario"],
+        [39,"fld_des_bbn_pai","varchar(35)","País del Beneficiario"],
+        [40,"fld_des_int_ad","char(1)","Opción banco Intermediario: A=57A, D=57D"],
+        [41,"fld_des_ben_bco_int","char(11)","Código BIC Banco intermediario"],
+        [42,"fld_des_int_fw","varchar(9)","Banco Intermediario (ABA)"],
+        [43,"fld_des_bib_nomb","varchar(35)","Nombre Banco Intermediario"],
+        [44,"fld_des_bib_ciu","varchar(35)","Ciudad Banco Intermediario"],
+        [45,"fld_des_bib_pai","varchar(35)","País Banco Intermediario"],
+        [46,"fld_des_ben_bco_ord","char(11)","Banco corresponsal del remitente"],
+        [47,"fld_des_bcr_nomb","varchar(35)","Nombre Banco corresponsal del remitente"],
+        [48,"fld_des_bcr_ciu","varchar(35)","Ciudad Banco corresponsal del remitente"],
+        [49,"fld_des_bcr_pai","varchar(35)","País Banco corresponsal del remitente"],
+        [50,"fld_des_ben_det_pgo","varchar(255)","Descripción detalle de pago"],
+        [51,"fld_des_ben_inf_bco","varchar(255)","Información Banco a Banco"],
+        [52,"fld_des_bde_ad","char(1)","Opción banco destinatario: A=57A, D=57D"],
+        [53,"fld_des_bde_swf","char(11)","Código BIC banco destinatario"],
+        [54,"fld_des_bde_fw","varchar(9)","Banco destinatario (ABA)"],
+        [55,"fld_des_bde_nomb","varchar(35)","Nombre banco destinatario"],
+        [56,"fld_des_bde_ciu","varchar(35)","Ciudad banco destinatario"],
+        [57,"fld_des_bbde_pai","varchar(35)","País banco destinatario"],
+        [58,"fld_des_det_gto","varchar(35)","Detalle de gastos"],
+        [59,"fld_des_ind_mon","char(1)","Indicador moneda destino: N=MN, X=MX"],
+        [60,"fld_des_ind_des","char(1)","Indicador de destino"],
+        [61,"fld_des_ind_gto","char(1)","Tipo gasto"],
+        [62,"fld_des_ind_fec_val","tinyint","Fecha valor"],
+        [63,"fld_des_gpl_obs","varchar(198)","Glosa observaciones normativas"],
+        [64,"fld_des_ind_arb","char(1)","Indicador de arbitraje"]
+      ]}
+    ]
+  },
+  {
+    id:"opi", label:"Orden de Pago Individual", color:"#0f766e",
+    desc:"Órdenes de pago individuales emitidas al exterior.",
+    tables:[
+      { id:"OPIOPR", label:"OPIOPR", desc:"Orden de pago individual – datos principales", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_fec_ing","datetime","Fecha de ingreso"],
+        [3,"fld_opr_ofi","smallint","Sucursal"],
+        [4,"fld_opr_nom_gdr","varchar(35)","Nombre beneficiario"],
+        [5,"fld_opr_cod_ced","tinyint","Código cedente"],
+        [6,"fld_opr_swf_ced","char(11)","Código ISO cedente"],
+        [7,"fld_opr_nom_ced","char(1)","Nombre cedente"],
+        [8,"fld_opr_dir_ced","char(1)","Dirección cedente"],
+        [9,"fld_opr_ciu_ced","char(1)","Ciudad cedente"],
+        [10,"fld_opr_pai_ced","smallint","País cedente"],
+        [11,"fld_opr_ref_ced","varchar(35)","Referencia cedente"],
+        [12,"fld_opr_fec_car_ced","datetime","Fecha cedente"],
+        [13,"fld_opr_mon_gto_ced","smallint","Moneda gasto cedente"],
+        [14,"fld_opr_mto_gto_ced","money","Monto gasto cedente"],
+        [15,"fld_opr_ind_gto_ced","bit","Indicador gasto cedente"],
+        [16,"fld_opr_nom_rep","char(1)","Indicador nombre rep"],
+        [17,"fld_opr_dir_rep","char(1)","Indicador dirección rep"],
+        [18,"fld_opr_ciu_rep","char(1)","Ciudad rep"],
+        [19,"fld_opr_fono_rep","char(1)","Fono rep"],
+        [20,"fld_opr_mto_com_rep","money","Monto rep"],
+        [21,"fld_opr_cod_gdo","varchar(11)","Rut ordenante"],
+        [22,"fld_opr_cta_gdo","varchar(16)","Cuenta ordenante"],
+        [23,"fld_opr_mon","smallint","Moneda operación"],
+        [24,"fld_opr_mto_ori","numeric(16,2)","Monto origen"],
+        [25,"fld_opr_fec_cont","datetime","Fecha contable"],
+        [26,"fld_opr_sdo_vig","numeric(16,2)","Saldo vigente"],
+        [27,"fld_opr_for_pag","char(1)","Forma de pago"],
+        [28,"fld_opr_cls_comp","tinyint","Cláusula de compra"],
+        [29,"fld_opr_mto_fob","numeric(16,2)","Monto fob"],
+        [30,"fld_opr_mto_flt","numeric(16,2)","Monto flete"],
+        [31,"fld_opr_mto_seg","numeric(16,2)","Monto seguro"],
+        [32,"fld_opr_mto_cif","numeric(16,2)","Monto cif"],
+        [33,"fld_opr_zon_fra","char(1)","Indicador zona franca"],
+        [34,"fld_opr_ind_dir","bit","Indicador de dirección"],
+        [35,"fld_opr_ind_ava","bit","Indicador aval"],
+        [36,"fld_opr_mto_ava","money","Monto aval"],
+        [37,"fld_opr_fec_rcp_ava","datetime","Fecha aval"],
+        [38,"fld_opr_car_cmp","bit","Indicador cartera"],
+        [39,"fld_opr_ind_ala","bit","Indicador aladi"],
+        [40,"fld_opr_ind_ace","bit","Indicador aceptación"],
+        [41,"fld_opr_fec_ace","datetime","Fecha aceptación"],
+        [42,"fld_opr_cnd_ent_doc","char(1)","Indicador condiciones entrega documentos"],
+        [43,"fld_opr_cnd_prot","char(1)","Indicador condiciones protesto"],
+        [44,"fld_opr_cod_tas_mra","smallint","Código tasa mora"],
+        [45,"fld_opr_spr_mra","float(53)","Spread mora"],
+        [46,"fld_opr_cod_tas_prov","smallint","Tasa interés proveedor"],
+        [47,"fld_opr_spr_prov","numeric(9,6)","Spread int proveedor"],
+        [48,"fld_opr_fec_ini_int","datetime","Fecha inicio intereses"],
+        [49,"fld_opr_via_tpt","smallint","Vía transporte"],
+        [50,"fld_opr_pto_emb","char(1)","Puerto de embarque"],
+        [51,"fld_opr_pto_dst","char(1)","Puerto de destino"],
+        [52,"fld_opr_fec_bdo_vlo","datetime","Fecha bordo/vuelo"],
+        [53,"fld_opr_dsc_mer","char(1)","Indicador descripción mercadería"],
+        [54,"fld_opr_pai_ori_mer","smallint","País origen mercadería"],
+        [55,"fld_opr_ins_esp","varchar(255)","Instrucción español"],
+        [56,"fld_opr_obs","varchar(255)","Observaciones"],
+        [57,"fld_opr_doc_emb_ori","int","Documentos embarque originales"],
+        [58,"fld_opr_doc_emb_cop","int","Documentos embarque copias"],
+        [59,"fld_opr_mon_flt_doc","smallint","Moneda flete documento"],
+        [60,"fld_opr_mto_flt_doc","money","Monto flete documento"],
+        [61,"fld_opr_mon_seg_doc","smallint","Moneda seguro documentos"],
+        [62,"fld_opr_mto_seg_doc","money","Monto seguro documentos"],
+        [63,"fld_opr_ind_let","bit","Indicador de letras"],
+        [64,"fld_opr_can_let","int","Cantidad de letras"],
+        [65,"fld_opr_ind_fac","bit","Indicador de factura"],
+        [66,"fld_opr_fac_ori","int","Factura originales"],
+        [67,"fld_opr_fac_cop","int","Factura copias"],
+        [68,"fld_opr_ind_seg","bit","Indicador de seguro"],
+        [69,"fld_opr_seg_ori","int","Seguro originales"],
+        [70,"fld_opr_seg_cop","int","Seguro copias"],
+        [71,"fld_opr_ind_not_gto","bit","Indicador nota de gastos"],
+        [72,"fld_opr_not_gto_ori","int","Nota de gastos originales"],
+        [73,"fld_opr_not_gto_cop","int","Nota de gastos copias"],
+        [74,"fld_opr_ind_lis_emp","bit","Indicador lista de empaque"],
+        [75,"fld_opr_lis_emp_ori","int","Lista de empaque originales"],
+        [76,"fld_opr_lis_emp_cop","int","Lista de empaque copias"],
+        [77,"fld_opr_ind_orig","bit","Indicador certificado de origen"],
+        [78,"fld_opr_orig_ori","int","Certificado de origen originales"],
+        [79,"fld_opr_orig_cop","int","Certificado de origen copias"],
+        [80,"fld_opr_ind_cal","bit","Indicador certificado de calidad"],
+        [81,"fld_opr_cal_ori","int","Certificado de calidad originales"],
+        [82,"fld_opr_cal_cop","int","Certificado de calidad copias"],
+        [83,"fld_opr_ind_pso","bit","Indicador certificado de peso"],
+        [84,"fld_opr_pso_ori","int","Certificado de peso originales"],
+        [85,"fld_opr_pso_cop","int","Certificado de peso copias"],
+        [86,"fld_opr_ind_ana","bit","Indicador certificado de análisis"],
+        [87,"fld_opr_ana_ori","int","Certificado de análisis originales"],
+        [88,"fld_opr_ana_cop","int","Certificado de análisis copias"],
+        [89,"fld_opr_ind_fit","bit","Indicador certificado fitosanitario"],
+        [90,"fld_opr_fit_ori","int","Certificado fitosanitario originales"],
+        [91,"fld_opr_fit_cop","int","Certificado fitosanitario copias"],
+        [92,"fld_opr_ind_san","bit","Indicador certificado de sanidad"],
+        [93,"fld_opr_san_ori","int","Certificado de sanidad originales"],
+        [94,"fld_opr_san_cop","int","Certificado de sanidad copias"],
+        [95,"fld_opr_ind_otr","bit","Indicador otros documentos"],
+        [96,"fld_opr_dsc_otr","char(1)","Descripción otros documentos"],
+        [97,"fld_opr_otr_ori","int","Otros documentos originales"],
+        [98,"fld_opr_otr_cop","int","Otros documentos copias"],
+        [99,"fld_opr_mto_int_prov","money","Monto interés provisionado"],
+        [100,"fld_opr_fec_ent_doc","datetime","Fecha entrega documentos"],
+        [101,"fld_opr_rec_doc","char(1)","Indicador recepción de documentos"],
+        [102,"fld_opr_fec_acep_let","datetime","Fecha aceptación de letras"],
+        [103,"fld_opr_num_con_emb","varchar(15)","Número conocimiento embarque"],
+        [104,"fld_opr_bco_trf","int","Indicador banco transferencia"],
+        [105,"fld_opr_fec_trf_bco","datetime","Fecha transferencia banco"],
+        [106,"fld_opr_fec_trf_ofi","datetime","Fecha transferencia oficina"],
+        [107,"fld_opr_ind_vis_rep","char(1)","Indicador visibilidad rep"],
+        [108,"fld_opr_ind_int","char(1)","Indicador interés"],
+        [109,"fld_opr_ref_gdo","varchar(35)","Referencia ordenante"],
+        [110,"fld_opr_flt_seg_chi","char(1)","Indicador flete seguro"],
+        [111,"fld_opr_cnd_ent_otr","char(1)","Indicador condición de entrega"],
+        [112,"fld_opr_mto_exfa","money","Monto ex-fábrica"],
+        [113,"fld_opr_mto_gfob","money","Monto gastos FOB"],
+        [114,"fld_opr_fec_ins_cob","datetime","Fecha instrucción de cobertura"],
+        [115,"fld_opr_mon_flt","smallint","Moneda flete"],
+        [116,"fld_opr_mto_flt_mon","money","Monto flete"],
+        [117,"fld_opr_mon_seg","smallint","Moneda seguro"],
+        [118,"fld_opr_mto_seg_mon","money","Monto seguro"],
+        [119,"fld_opr_fec_vto","datetime","Fecha de vencimiento"],
+        [120,"fld_opr_fec_ult_pag","datetime","Fecha último pago"],
+        [121,"fld_opr_fec_ini_plz","datetime","Fecha inicio de plazo"],
+        [122,"fld_opr_tas_aval","float(53)","Tasa aval"],
+        [123,"fld_opr_ind_com_age","bit","Indicador comisión agente"],
+        [124,"fld_opr_ind_flt_chi","bit","Indicador flete Chile"],
+        [125,"fld_opr_ind_seg_chi","bit","Indicador seguro Chile"],
+        [126,"fld_opr_fec_ini_mor","datetime","Fecha inicio mora"],
+        [127,"fld_opr_sdo_cif","money","Monto saldo CIF"],
+        [128,"fld_opr_dsc_rem","varchar(140)","Descripción de reembolso"],
+        [129,"fld_opr_ind_gto","char(1)","Indicador de gastos"],
+        [130,"fld_opr_tipo","char(1)","Tipo: T=Tránsito"],
+        [131,"fld_opr_cod_ges","int","Código gestor"],
+        [132,"fld_opr_swf_ben","char(11)","Código ISO banco beneficiario"],
+        [133,"fld_opr_swf_int","char(11)","Código ISO banco intermediario"],
+        [134,"fld_opr_cta_bbe","char(11)","Cuenta banco beneficiario"],
+        [135,"fld_opr_swf_cor","char(11)","Código ISO banco corresponsal"],
+        [136,"fld_opr_cod_val","tinyint","Código valuta"],
+        [137,"fld_opr_swf_rec","char(11)","Código ISO banco receptor"],
+        [138,"fld_opr_dir_ben","varchar(35)","Dirección beneficiario"],
+        [139,"fld_opr_ciu_ben","varchar(35)","Ciudad beneficiario"],
+        [140,"fld_opr_pai_ben","smallint","País beneficiario"],
+        [141,"fld_opr_cta_ben","varchar(34)","Cuenta beneficiario"],
+        [142,"fld_opr_ind_ddi","bit","Indicador DDI"]
+      ]},
+      { id:"OPEORI", label:"OPEORI", desc:"Origen de fondos – Orden de Pago Individual", fields:[
+        [1,"fld_opr_num","varchar(16)","Número de operación"],
+        [2,"fld_opr_car","char(1)","Tipo de orden de pago: T=Tránsito, C=Cartera"],
+        [3,"fld_trs_num_trs","int","Número de traspaso contable"],
+        [4,"fld_ori_corr","smallint","Correlativo origen de fondos"],
+        [5,"fld_opr_ofi","smallint","Sucursal"],
+        [6,"fld_ori_cod_ori","smallint","Código de origen de fondos"],
+        [7,"fld_ori_mto_ori","numeric(16,2)","Monto en moneda de la Orden de pago"],
+        [8,"fld_ori_mto_arb","numeric(16,2)","Monto en moneda de origen de fondos"],
+        [9,"fld_ori_mon_arb","char(3)","Moneda del origen de fondos"],
+        [10,"fld_ori_par_arb","numeric(16,9)","Tasa de arbitraje"],
+        [11,"fld_ori_bco_cor","char(11)","Banco Corresponsal"],
+        [12,"fld_ori_cta_cte","varchar(34)","Cuenta Corriente"],
+        [13,"fld_ori_ind_arb","char(1)","Indicador de arbitraje"],
+        [14,"fld_ori_ind_ori","char(1)","Indicador de origen: N=MN, X=MX"]
+      ]},
+      { id:"OPEBCO", label:"OPEBCO", desc:"Bancos asociados a la Orden de Pago", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_car","char(1)","Tipo de orden de pago: T=Tránsito, C=Cartera"],
+        [3,"fld_bco_rol","char(4)","Código del rol del banco en la operación"],
+        [4,"fld_bco_cod_iso","char(11)","Código BIC del banco"],
+        [5,"fld_bco_cod_cta","varchar(34)","Cuenta"],
+        [6,"fld_bco_nom","varchar(35)","Nombre del banco"],
+        [7,"fld_bco_dir","varchar(35)","Dirección del banco"],
+        [8,"fld_bco_ciu","varchar(35)","Ciudad del banco"],
+        [9,"fld_bco_pai_nom","varchar(35)","Nombre país"],
+        [10,"fld_bco_pai_iso","char(2)","Código ISO del país"],
+        [11,"fld_bco_ind_cor","char(1)","Indicador corresponsal"],
+        [12,"fld_bco_ind_fw","char(1)","Indicador de ABA"]
+      ]},
+      { id:"OPITXT", label:"OPITXT", desc:"Textos asociados a la Orden de Pago", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_txt_tip","char(5)","Tipo texto"],
+        [3,"fld_txt_cod","char(6)","Código texto"],
+        [4,"fld_txt_cor","smallint","Correlativo texto"],
+        [5,"fld_txt_cor_eml","smallint","Correlativo correo electrónico"],
+        [6,"fld_txt_gls","varchar(255)","Texto"]
+      ]}
+    ]
+  },
+  {
+    id:"crd", label:"Colocaciones", color:"#6d28d9",
+    desc:"Créditos, tasas, plan de pago, garantías, eventos y asientos contables.",
+    tables:[
+      { id:"CRDOPR", label:"CRDOPR", desc:"Créditos – datos principales", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_car","char(1)","Cartera: A=Activo, P=Pasivo"],
+        [3,"fld_opr_cod_cnl","char(4)","Canal"],
+        [4,"fld_opr_ref_cli","varchar(35)","Referencia de cliente"],
+        [5,"fld_opr_ofi","smallint","Sucursal"],
+        [6,"fld_opr_mon","char(3)","Moneda (Código ISO)"],
+        [7,"fld_opr_cod_plc","smallint","Perfil de operación"],
+        [8,"fld_opr_cod_cli","char(11)","Rut cliente"],
+        [9,"fld_opr_fam_prd","char(4)","Familia de producto"],
+        [10,"fld_opr_cod_prd","char(4)","Código de producto"],
+        [11,"fld_opr_cls_ope","smallint","Clase de operación: 8=PAE, FCMTO Contado=4"],
+        [12,"fld_opr_for_fin","char(1)","Forma de financiamiento"],
+        [13,"fld_opr_tip_reem","char(1)","Tipo de reembolso"],
+        [14,"fld_opr_ind_zon_fra","char(1)","Indicador de Zona Franca"],
+        [15,"fld_opr_ind_rto","bit","Indicador de refinanciamiento"],
+        [16,"fld_opr_ind_tpais","bit","Indicador terceros países"],
+        [17,"fld_opr_for_pag","smallint","Forma de pago"],
+        [18,"fld_opr_ind_orig","char(1)","Indicador de origen"],
+        [19,"fld_opr_ult_opr_ren","char(16)","Última operación"],
+        [20,"fld_opr_fec_otor","datetime","Fecha de otorgamiento"],
+        [21,"fld_opr_fec_vto","datetime","Fecha de vencimiento"],
+        [22,"fld_opr_nvl_apr_cre","smallint","Novación"],
+        [23,"fld_opr_fec_cont","datetime","Fecha de contabilización"],
+        [24,"fld_opr_tas_fin","numeric(9,6)","Tasa final"],
+        [25,"fld_opr_tas_tip","smallint","Tipo de tasa base según tabla BCXPINT"],
+        [26,"fld_opr_tas_bas","numeric(9,6)","No aplica a TBD"],
+        [27,"fld_opr_tas_spr","numeric(9,6)","Costo de fondo más Spread"],
+        [28,"fld_plc_dia_bas_tas","smallint","Días base"],
+        [29,"fld_opr_cod_dst_crd","smallint","Código destino del crédito"],
+        [30,"fld_opr_dias_pzo","smallint","Días plazo"],
+        [31,"fld_opr_fec_ini_pag_int","datetime","Fecha inicio pago intereses"],
+        [32,"fld_opr_mto_int_dev","numeric(16,2)","Monto intereses devengados"],
+        [33,"fld_opr_mto_reaj_dev","numeric(16,2)","Monto reajuste devengados"],
+        [34,"fld_opr_fec_sus_int","datetime","Fecha de intereses suspendidos"],
+        [35,"fld_opr_fec_sus_reaj","datetime","Fecha de reajuste suspendidos"],
+        [36,"fld_opr_mto_int_prov","numeric(16,2)","Monto intereses provisionados"],
+        [37,"fld_opr_fec_ult_trs_car","datetime","Fecha de último traspaso de cartera"],
+        [38,"fld_opr_est","tinyint","Estado: 0=Vigente, 5=Mora, 1=Vencida"],
+        [39,"fld_opr_fec_ult_pror","datetime","Fecha de última prórroga"],
+        [40,"fld_opr_cant_pror","smallint","Cantidad de prórrogas"],
+        [41,"fld_opr_fec_anu","datetime","Fecha de anulación"],
+        [42,"fld_opr_fec_ult_mod","datetime","Fecha de última modificación"],
+        [43,"fld_opr_cant_mod","smallint","Cantidad de modificaciones"],
+        [44,"fld_opr_ult_num_mod","smallint","Último número de modificación"],
+        [45,"fld_opr_fec_ult_pag","datetime","Fecha de último pago"],
+        [46,"fld_opr_mto_ori","numeric(16,2)","Monto original"],
+        [47,"fld_opr_mto_sdo","numeric(16,2)","Saldo"],
+        [48,"fld_opr_trs_car_cap","numeric(16,2)","Monto de capital en otras carteras"],
+        [49,"fld_opr_trs_car_reaj","numeric(16,2)","Monto reajuste en otras carteras"],
+        [50,"fld_opr_trs_car_int","numeric(16,2)","Monto intereses en otras carteras"],
+        [51,"fld_opr_ind_org_prod","tinyint","Indicador origen"],
+        [52,"fld_opr_mon_ree","char(3)","Moneda de reembolso"],
+        [53,"fld_opr_asoc_num","char(16)","Número de operación asociado"],
+        [54,"fld_opr_corr_opr","smallint","Correlativo de operación"],
+        [55,"fld_opr_asoc_num_extr","varchar(35)","Número exterior asociado"],
+        [56,"fld_opr_pzo_ctb","varchar(16)","Plazo contable"],
+        [57,"fld_opr_fec_eval_tas","datetime","Fecha de evaluación de tasa"]
+      ]},
+      { id:"CRDCUO", label:"CRDCUO", desc:"Plan de pago – cuotas", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_car","char(1)","Cartera"],
+        [3,"fld_cuo_num_cuo","smallint","Número de cuota"],
+        [4,"fld_cuo_fec_vto","datetime","Fecha de vencimiento"],
+        [5,"fld_cuo_mto_ori","numeric(16,2)","Monto original"],
+        [6,"fld_cuo_dia_pzo","smallint","Días plazo"],
+        [7,"fld_cuo_fec_trs_car","datetime","Fecha de traspaso a otras carteras"],
+        [8,"fld_cuo_mto_trs_car","numeric(16,2)","Monto capital traspasado a otras carteras"],
+        [9,"fld_cuo_reaj_trs_car","numeric(16,2)","Reajuste traspasado a otras carteras"],
+        [10,"fld_cuo_int_trs_car","numeric(16,2)","Monto intereses traspasado a otras carteras"],
+        [11,"fld_cuo_int_cob_ven","numeric(16,2)","Monto intereses traspasados a cartera vencida"],
+        [12,"fld_cuo_cod_est","tinyint","Estado de la cuota"],
+        [13,"fld_cuo_mto_sdo","numeric(16,2)","Saldo de la cuota"],
+        [14,"fld_cuo_tip_cuo","char(1)","Tipo de cuota"]
+      ]},
+      { id:"CRDTAS", label:"CRDTAS", desc:"Tasas – Créditos", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_car","char(1)","Cartera"],
+        [3,"fld_tas_fec_ini","datetime","Fecha inicio"],
+        [4,"fld_tas_fec_fin","datetime","Fecha final"],
+        [5,"fld_tas_tip_tas","smallint","Tipo de tasa"],
+        [6,"fld_tas_val_tas","numeric(9,6)","Valor tasa base"],
+        [7,"fld_tas_spr","numeric(9,6)","Spread total"],
+        [8,"fld_tas_tas_fin","numeric(9,6)","Tasa final"],
+        [9,"fld_tas_spr_cof","numeric(9,6)","Costo de fondo"],
+        [10,"fld_tas_spr_spr","numeric(9,6)","Spread comercial"]
+      ]},
+      { id:"CRDBCO", label:"CRDBCO", desc:"Bancos asociados – Créditos", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_car","char(1)","Cartera"],
+        [3,"fld_bco_rol","char(4)","Rol"],
+        [4,"fld_bco_cod_iso","char(11)","BIC del banco"],
+        [5,"fld_bco_cod_aba","varchar(9)","Código ABA del banco"],
+        [6,"fld_bco_nom","varchar(35)","Nombre del banco"],
+        [7,"fld_bco_dir","varchar(35)","Dirección del banco"],
+        [8,"fld_bco_ciu","varchar(35)","Ciudad del banco"],
+        [9,"fld_bco_pai_iso","char(2)","ISO del país del banco"],
+        [10,"fld_bco_pai_nom","varchar(35)","Nombre del país del banco"]
+      ]},
+      { id:"CRDTXT", label:"CRDTXT", desc:"Tabla de textos – Créditos", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_car","char(1)","Cartera"],
+        [3,"fld_txt_tip","char(5)","Tipo de texto"],
+        [4,"fld_txt_cod","char(6)","Código de texto"],
+        [5,"fld_txt_cor","smallint","Correlativo código de texto"],
+        [6,"fld_txt_gls","varchar(255)","Texto"],
+        [7,"fld_txt_ori","tinyint","Número de originales (documentos)"],
+        [8,"fld_txt_cop","tinyint","Número de copias (documentos)"],
+        [9,"fld_txt_cor_eml","tinyint","Correlativo correo electrónico"],
+        [10,"fld_txt_ind_ing","char(1)","Indicador de ingreso"]
+      ]},
+      { id:"BCXCYG", label:"BCXCYG", desc:"Comisiones y gastos por operación", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación"],
+        [2,"fld_opr_num_ori","char(16)","Número de operación original"],
+        [3,"fld_opr_num_ori_corr","smallint","Correlativo de operación original"],
+        [4,"fld_cyg_cod_com","smallint","Código comisión"],
+        [5,"fld_cyg_num_corr","smallint","Número correlativo"],
+        [6,"fld_cyg_cod_pro","char(3)","Código producto"],
+        [7,"fld_cyg_cod_mon","smallint","Moneda comisión"],
+        [8,"fld_cyg_mto_com","money","Monto comisión"],
+        [9,"fld_cyg_cod_eve","int","Código evento"],
+        [10,"fld_cyg_num_trs","int","Número de traspaso"],
+        [11,"fld_cyg_fec_cob","datetime","Fecha de cobro"],
+        [12,"fld_cyg_est","char(16)","Estado"],
+        [13,"fld_cyg_ind_afe","bit","Indicador afecto"],
+        [14,"fld_cyg_ind_cnv","bit","Indicador conversión"],
+        [15,"fld_cyg_cod_not","smallint","Notario"],
+        [16,"fld_cyg_tipo","char(1)","Tipo de comisión"],
+        [17,"fld_cyg_modo","char(1)","Modo"]
+      ]},
+      { id:"CRDGAR", label:"CRDGAR", desc:"Avales y garantías", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación – relacionada con CRDOPR"],
+        [2,"fld_opr_car","char(1)","Cartera 'A'"],
+        [3,"fld_gar_tip","char(3)","Tipo de garantía 'AVA'"],
+        [4,"fld_gar_tip_corr","tinyint","Correlativo"],
+        [5,"fld_gar_ref","varchar(20)","Referencia"],
+        [6,"fld_gar_atr","varchar(18)","Rut del aval"],
+        [7,"fld_gar_fec_const","datetime","Fecha de ingreso"],
+        [8,"fld_gar_fec_vto","datetime","Fecha de vencimiento"],
+        [9,"fld_gar_pct","numeric(5,2)","Porcentaje de la garantía"],
+        [10,"fld_gar_mto","numeric(16,2)","Monto de la garantía"]
+      ]},
+      { id:"CRDEVE", label:"CRDEVE", desc:"Detalle de eventos de la operación", fields:[
+        [1,"fld_opr_num","varchar(16)","Número de operación – relacionada con CRDOPR"],
+        [2,"fld_opr_car","varchar(1)","Cartera 'A'"],
+        [3,"fld_eve_num_corr","smallint","Correlativo del evento"],
+        [4,"fld_eve_cod","smallint","Código de evento: 1=Otorgamiento, 4=Modificación, 6=Pago, 7=Prórroga, 9=Traspaso de cartera"],
+        [5,"fld_eve_cod_usu","varchar(15)","Código de usuario"],
+        [6,"fld_eve_fec","datetime","Fecha del evento"],
+        [7,"fld_eve_fec_vto_ant","datetime","Vencimiento anterior al evento"],
+        [8,"fld_eve_fec_vto_act","datetime","Vencimiento actual"],
+        [9,"fld_eve_tip_tas_int_ant","smallint","Tipo de tasa anterior al evento"],
+        [10,"fld_eve_tas_spr_ant","float","Spread anterior al evento"],
+        [11,"fld_eve_dia_tas_ant","smallint","Días tasa anterior al evento"],
+        [12,"fld_eve_fec_ini_pag_ant","datetime","Inicio pago de intereses anterior al evento"],
+        [13,"fld_eve_fec_ini_pag_act","datetime","Inicio pago de intereses actual"],
+        [14,"fld_eve_ind_vto_int","bit","Indicador de intereses al vencimiento"],
+        [15,"fld_eve_ind_int_pag","bit","Indicador de pago de intereses"],
+        [16,"fld_eve_mto_cap_ori","money","Monto capital original"],
+        [17,"fld_eve_num_tras_cont","int","Número de traspaso"],
+        [18,"fld_eve_car_ori_des","char(1)","Origen/destino de fondos"],
+        [19,"fld_eve_tip_ope_ant","smallint","Tipo de operación anterior al evento"],
+        [20,"fld_eve_tip_cmb","float","Tipo de cambio transacción"],
+        [21,"fld_eve_tip_cmb_int","float","Tipo de cambio intereses"],
+        [22,"fld_eve_cta_cte_mn","varchar(16)","Cuenta corriente MN"],
+        [23,"fld_eve_cta_cte_mx","varchar(16)","Cuenta corriente MX"]
+      ]},
+      { id:"CRDBAJ", label:"CRDBAJ", desc:"Detalle de bajas de la operación", fields:[
+        [1,"fld_opr_num","char(16)","Número de operación – relacionada con CRDOPR"],
+        [2,"fld_opr_car","char(2)","Cartera 'A'"],
+        [3,"fld_eve_num_corr","smallint","Correlativo de la baja"],
+        [4,"fld_baj_tip_baj","tinyint","Tipo de baja"],
+        [5,"fld_baj_rut_opr","char(11)","Rut del cliente"],
+        [6,"fld_baj_cod_eve","smallint","Código del evento"],
+        [7,"fld_baj_fec_eve","datetime","Fecha del evento"],
+        [8,"fld_baj_fec_vto_act","datetime","Fecha de vencimiento actual"],
+        [9,"fld_baj_fec_vto_ant","datetime","Fecha de vencimiento anterior"],
+        [10,"fld_baj_fec_ini_int_ant","datetime","Fecha inicio pago intereses anterior"],
+        [11,"fld_baj_fec_ini_int_act","datetime","Fecha inicio pago intereses actual"],
+        [12,"fld_baj_int_pag_vto","numeric(16,2)","Intereses pagados al vencimiento"],
+        [13,"fld_baj_int_pag_mor","numeric(16,2)","Intereses pagados en mora"],
+        [14,"fld_baj_dia_int_pac","smallint","Días intereses pactados"],
+        [15,"fld_baj_dia_int_mor","smallint","Días intereses mora"],
+        [16,"fld_baj_fec_fin_pag_int","datetime","Fecha fin pago intereses"],
+        [17,"fld_baj_tas_fin_pag","numeric","Tasa final"],
+        [18,"fld_baj_tas_fin_pag_mor","numeric","Tasa final mora"],
+        [19,"fld_baj_num_trs","int","Número de traspaso"],
+        [20,"fld_baj_sdo_ant","numeric","Saldo anterior"],
+        [21,"fld_baj_sdo_act","numeric","Saldo actual"],
+        [22,"fld_baj_mto_eve","numeric","Monto del evento"],
+        [23,"fld_baj_mto_int_ant","numeric","Intereses anteriores"],
+        [24,"fld_baj_mto_int_act","numeric","Intereses actuales"],
+        [25,"fld_baj_mto_int","numeric","Monto intereses"],
+        [26,"fld_baj_tip_cmb","numeric","Tipo de cambio"],
+        [27,"fld_baj_cta_ctble_mx","varchar(16)","Cuenta corriente MX"],
+        [28,"fld_baj_cta_ctble_mn","varchar(16)","Cuenta corriente MN"],
+        [29,"fld_baj_mon_iso_ant","char(3)","Moneda ISO anterior"],
+        [30,"fld_baj_mon_iso_act","char(3)","Moneda ISO actual"],
+        [31,"fld_baj_ori_fdo","tinyint","Origen de fondo"],
+        [32,"fld_baj_cod_plc_ant","smallint","Código PLC anterior"]
+      ]},
+      { id:"BCXTRSD", label:"BCXTRSD", desc:"Traspasos Contables", fields:[
+        [1,"fld_trs_num_trs","int","Número de traspaso"],
+        [2,"fld_trs_nom_eve","varchar(30)","Nombre del evento"],
+        [3,"fld_trs_fec_trs","datetime","Fecha del traspaso"],
+        [4,"fld_trs_suc_trs","varchar(35)","Sucursal de la operación"],
+        [5,"fld_trs_sec_con","int","Sector contable"],
+        [6,"fld_trs_rut_cln","varchar(35)","Rut del cliente"],
+        [7,"fld_trs_num_ope","varchar(16)","Número de la operación"],
+        [8,"fld_trs_ope_com","varchar(16)","Número de operación complementaria"],
+        [9,"fld_trs_eve_ble","int","Evento contable"],
+        [10,"fld_trs_suc_cod","int","Código de sucursal"],
+        [11,"fld_trs_mod_gen","int","Módulo de generación"],
+        [12,"fld_trs_est_trs","char(1)","Estado del traspaso"],
+        [13,"fld_trs_cpto","smallint","No se utiliza"],
+        [14,"fld_trs_grp_cpto","smallint","No se utiliza"]
+      ]},
+      { id:"BCXASND", label:"BCXASND", desc:"Asientos Contables", fields:[
+        [1,"fld_trs_num_trs","int","Número de traspaso"],
+        [2,"fld_asn_num_asn","int","Número de asiento"],
+        [3,"fld_asn_glo","varchar(30)","Glosa del asiento"],
+        [4,"fld_asn_mon_asn","int","Moneda del asiento"],
+        [5,"fld_asn_cta_ble","varchar(16)","Cuenta contable"],
+        [6,"fld_asn_mto_imp","money","Monto del asiento"],
+        [7,"fld_asn_deb_hab","char(1)","Imputación: D=Debe, H=Haber"],
+        [8,"fld_asn_con_imp","char(1)","Tipo: C=Comisión, O=Origen de fondo, D=Destino de fondo, I=IVA, V=Conversión"],
+        [9,"fld_asn_fec_val","datetime","Fecha del asiento"],
+        [10,"fld_asn_cen_cos","int","Centro de costo"],
+        [11,"fld_asn_num_doc","varchar(16)","Número de operación"],
+        [12,"fld_asn_abo_car","int","Abono/Cargo"],
+        [13,"fld_asn_tip_cam","float","Tipo de cambio"],
+        [14,"fld_asn_suc_des","int","Sucursal"],
+        [15,"fld_asn_cod_corr","varchar","Código correlativo"],
+        [16,"fld_asn_act_eco","int","Actividad económica"],
+        [17,"fld_asn_ind_int","int","Indicador de comisión"],
+        [18,"fld_asn_ori_fon","int","Origen/Destino de fondo"],
+        [19,"fld_asn_cod_trn","varchar(4)","Código de TRN"],
+        [20,"fld_asn_fec_ven","datetime","Fecha por defecto"],
+        [21,"fld_asn_cta_cte","varchar(16)","Cuenta corriente"],
+        [22,"fld_asn_ind_iofi","char(1)","Indicador de interoficina"]
+      ]}
+    ]
+  }
+];
+
+const ALL={};
+for(const m of MODS) for(const t of m.tables) ALL[t.id]={...t,modLabel:m.label,modColor:m.color};
+
+function tc(raw){
+  const t=raw.toLowerCase().replace(/\s*\(.*\)/,'').trim();
+  return 'tc-'+({'char':'char','varchar':'varchar','numeric':'numeric','decimal':'decimal',
+    'money':'money','datetime':'datetime','date':'date','int':'int','smallint':'smallint',
+    'tinyint':'tinyint','bigint':'bigint','bit':'bit','float':'float','real':'real'}[t]||'other');
+}
+
+function buildSidebar(){
+  let h='';
+  for(const m of MODS){
+    h+=`<div class="mod-section">
+      <div class="mod-hdr" onclick="toggleGroup('g-${m.id}')">
+        <span class="mod-dot" style="background:${m.color}"></span>${m.label}
+      </div>
+      <div class="tbl-group" id="g-${m.id}">
+        ${m.tables.map(t=>`
+          <div class="tbl-link" id="sl-${t.id}" onclick="showTable('${t.id}')">
+            ${t.label}<span class="tbl-badge">${t.fields.length}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }
+  document.getElementById('sidebar-nav').innerHTML=h;
+}
+
+function toggleGroup(id){
+  const el=document.getElementById(id);
+  el.style.display=el.style.display==='none'?'grid':'none';
+}
+
+function showOverview(){
+  document.getElementById('view-overview').style.display='';
+  document.getElementById('view-table').style.display='none';
+  document.querySelectorAll('.tbl-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('ov-modules').innerHTML=MODS.map(m=>`
+    <div class="mod-card">
+      <div class="mod-card-head" style="background:linear-gradient(135deg,${m.color}cc,${m.color})">${m.label}</div>
+      <div class="mod-card-body">
+        <p>${m.desc}</p>
+        <div class="tbls-mini">
+          ${m.tables.map(t=>`
+            <div class="tbl-mini" onclick="showTable('${t.id}')">
+              <strong>${t.label}</strong><span>${t.fields.length} campos</span>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function showTable(id){
+  const t=ALL[id];if(!t)return;
+  document.getElementById('view-overview').style.display='none';
+  document.getElementById('view-table').style.display='';
+  document.getElementById('search-input').value='';
+  document.querySelectorAll('.tbl-link').forEach(l=>l.classList.remove('active'));
+  const sl=document.getElementById('sl-'+id);
+  if(sl)sl.classList.add('active');
+  document.getElementById('tv-title').textContent=t.label+'  ·  '+t.desc;
+  document.getElementById('tv-sub').textContent='Módulo: '+t.modLabel+'  ·  '+t.fields.length+' campos';
+  document.getElementById('field-count').textContent=t.fields.length+' campos';
+  document.getElementById('tbl-body').innerHTML=t.fields.map(([n,col,type,desc])=>`
+    <tr>
+      <td class="num-c">${n}</td>
+      <td><span class="col-name">${col.trim()}</span></td>
+      <td><span class="type-tag ${tc(type)}">${type.trim()}</span></td>
+      <td>${desc?`<span class="desc-c">${desc}</span>`:'<span class="desc-empty">—</span>'}</td>
+    </tr>`).join('');
+  document.getElementById('no-results').style.display='none';
+  window.scrollTo(0,0);
+}
+
+function filterTable(q){
+  const rows=document.querySelectorAll('#tbl-body tr');
+  const term=q.toLowerCase().trim();
+  let vis=0;
+  rows.forEach(r=>{
+    const match=!term||r.textContent.toLowerCase().includes(term);
+    r.classList.toggle('hidden',!match);
+    if(match)vis++;
+  });
+  document.getElementById('field-count').textContent=vis+' campos';
+  document.getElementById('no-results').style.display=vis===0?'':'none';
+}
+
+buildSidebar();
+showOverview();
+</script>
+</body>
+</html>
