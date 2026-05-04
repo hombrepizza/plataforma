@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Democratización de Datos</title>
+  <style>
+    :root {
+      --bg: #f4f8fc;
+      --surface: #ffffff;
+      --surface-soft: #f8fbff;
+      --text: #17324d;
+      --muted: #677c90;
+      --border: #d9e4ef;
+      --brand: #2f6fb5;
+      --brand-dark: #1c4f81;
+      --accent: #4d92db;
+      --accent-soft: #d9ecff;
+      --good-bg: #e7f7ee;
+      --good-text: #1f7a4d;
+      --warn-bg: #fff3dc;
+      --warn-text: #9b6900;
+      --bad-bg: #fde6e6;
+      --bad-text: #b33a3a;
+      --shadow: 0 12px 34px rgba(24, 55, 88, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(77, 146, 219, 0.12), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1280px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid rgba(217, 228, 239, 0.9);
+      backdrop-filter: blur(14px);
+      background: rgba(248, 251, 255, 0.88);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--brand) 100%);
+      color: #fff;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+    }
+
+    .brand small {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .brand strong { font-size: 18px; }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .nav a.active,
+    .nav a:hover {
+      background: #fff;
+      color: var(--brand-dark);
+      box-shadow: 0 8px 22px rgba(47, 111, 181, 0.12);
+    }
+
+    .page { padding: 30px 0 56px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid #d4e3f2;
+      background: #f5faff;
+      color: var(--brand-dark);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .hero,
+    .grid-2,
+    .grid-3,
+    .grid-4,
+    .grid-5,
+    .layout,
+    .products-grid,
+    .pipeline-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero { grid-template-columns: 1.35fr 0.85fr; }
+    .layout { grid-template-columns: 1.45fr 0.9fr; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-5 { grid-template-columns: repeat(5, 1fr); }
+    .products-grid { grid-template-columns: repeat(3, 1fr); }
+    .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .card,
+    .hero-main,
+    .hero-side,
+    .metric-card,
+    .section-card,
+    .product-card,
+    .pipeline-card,
+    .panel,
+    .side-card,
+    .banner,
+    .filter-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main,
+    .hero-side,
+    .metric-card,
+    .section-card,
+    .product-card,
+    .pipeline-card,
+    .panel,
+    .side-card,
+    .banner,
+    .filter-card { padding: 22px; }
+
+    h1, h2, h3, h4, p { margin-top: 0; }
+
+    h1 {
+      font-size: clamp(34px, 4.5vw, 52px);
+      line-height: 1.03;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+      max-width: 11ch;
+    }
+
+    h2.section-title {
+      margin-bottom: 8px;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle,
+    .hero-main p,
+    .hero-side p,
+    .metric-card p,
+    .section-card p,
+    .product-card p,
+    .pipeline-card p,
+    .panel p,
+    .side-card p,
+    .banner p,
+    .filter-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .meta-row,
+    .tag-row,
+    .filters-row,
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill,
+    .tag,
+    .status,
+    .domain-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid #d7e4f3;
+      background: #f5faff;
+      color: var(--brand-dark);
+    }
+
+    .metric-value,
+    .score {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--brand-dark);
+      margin-bottom: 8px;
+    }
+
+    .section { padding: 18px 0 8px; }
+
+    .product-card,
+    .pipeline-card {
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .product-card:hover,
+    .pipeline-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(24, 55, 88, 0.12);
+    }
+
+    .product-top,
+    .pipeline-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .score { font-size: 24px; white-space: nowrap; }
+
+    .progress-block,
+    .metric-list,
+    .side-list,
+    .use-list,
+    .milestone-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .progress-item,
+    .metric-item,
+    .side-item,
+    .use-item,
+    .milestone-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fbfdff;
+    }
+
+    .progress-item header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .bar {
+      width: 100%;
+      height: 8px;
+      background: #e9f0f7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #79b1ea 0%, #2f6fb5 100%);
+      border-radius: inherit;
+    }
+
+    .split-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini-stat {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fbfdff;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+      color: var(--brand-dark);
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      background: linear-gradient(135deg, #f7fbff 0%, #ebf4fc 100%);
+      margin-top: 18px;
+    }
+
+    .good { background: var(--good-bg); color: var(--good-text); }
+    .warn { background: var(--warn-bg); color: var(--warn-text); }
+    .bad { background: var(--bad-bg); color: var(--bad-text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--brand) 100%);
+    }
+
+    .btn-secondary {
+      color: var(--brand-dark);
+      background: #fff;
+      border-color: #d7e4f2;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid #e3edf6;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .footer {
+      padding: 26px 0 48px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1140px) {
+      .hero,
+      .layout,
+      .products-grid,
+      .grid-5,
+      .grid-4,
+      .grid-3,
+      .pipeline-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .topbar-inner,
+      .banner,
+      .product-top,
+      .pipeline-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero,
+      .layout,
+      .products-grid,
+      .pipeline-grid,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .grid-5,
+      .split-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">DD</div>
+        <div>
+          <small>Pilar estratégico</small>
+          <strong>Democratización de Datos</strong>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#inicio" class="active">Inicio</a>
+        <a href="#publicados">Productos publicados</a>
+        <a href="#desarrollo">En desarrollo</a>
+        <a href="#adopcion">Adopción</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page" id="inicio">
+    <span class="eyebrow">Sección especializada · Democratización de Datos</span>
+    <section class="hero">
+      <div class="hero-main">
+        <h1>Visibilizar productos de datos, adopción y avance del portafolio</h1>
+        <p>
+          Esta sección traduce el pilar de <strong>Democratización de Datos</strong> en una experiencia práctica para la organización.
+          Debe mostrar qué productos ya están disponibles por dominio, su nivel de usabilidad, cuántos usuarios activos los consumen,
+          y al mismo tiempo exponer los proyectos en desarrollo con avance real contra lo planificado.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Dominios de datos</span>
+          <span class="pill">Productos de datos</span>
+          <span class="pill">Base única de clientes</span>
+          <span class="pill">Gestión de consentimientos</span>
+        </div>
+      </div>
+      <aside class="hero-side">
+        <h3>Qué debe responder esta sección</h3>
+        <div class="side-list">
+          <div class="side-item"><strong>Qué ya existe</strong><p>Productos publicados y disponibles para consumo.</p></div>
+          <div class="side-item"><strong>Quién lo usa</strong><p>Adopción real y usuarios activos por producto.</p></div>
+          <div class="side-item"><strong>Qué viene</strong><p>Pipeline de productos y avance respecto del plan.</p></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="grid-5">
+        <div class="metric-card"><span class="metric-value">18</span><p>Productos publicados</p></div>
+        <div class="metric-card"><span class="metric-value">9</span><p>Productos en desarrollo</p></div>
+        <div class="metric-card"><span class="metric-value">436</span><p>Usuarios activos</p></div>
+        <div class="metric-card"><span class="metric-value">74%</span><p>Usabilidad promedio</p></div>
+        <div class="metric-card"><span class="metric-value">81%</span><p>Avance promedio vs plan</p></div>
+      </div>
+    </section>
+
+    <section id="publicados" class="section">
+      <h2 class="section-title">Productos de datos publicados</h2>
+      <p class="section-subtitle">
+        Vista orientada a discovery y adopción. Cada producto se organiza por dominio y muestra señales de uso efectivo:
+        nivel de usabilidad, usuarios activos y consumidores recurrentes.
+      </p>
+
+      <div class="filter-card" style="margin-bottom:18px;">
+        <h3>Filtros sugeridos</h3>
+        <div class="filters-row">
+          <span class="tag">Dominio: Clientes</span>
+          <span class="tag">Dominio: Riesgo</span>
+          <span class="tag">Dominio: Finanzas</span>
+          <span class="tag">Usabilidad: Alta</span>
+          <span class="tag">Usuarios activos: +50</span>
+          <span class="tag">Consumo semanal</span>
+        </div>
+      </div>
+
+      <div class="products-grid">
+        <article class="product-card">
+          <div class="product-top">
+            <div>
+              <h3>Customer 360</h3>
+              <span class="domain-badge">Dominio: Clientes</span>
+            </div>
+            <span class="score">82%</span>
+          </div>
+          <p>Producto con visión integrada de cliente, atributos maestros, segmentación y actividad reciente.</p>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>126</strong><span>Usuarios activos</span></div>
+            <div class="mini-stat"><strong>84</strong><span>Consumidores recurrentes</span></div>
+            <div class="mini-stat"><strong>82%</strong><span>Usabilidad</span></div>
+          </div>
+          <div class="progress-block" style="margin-top:14px;">
+            <div class="progress-item"><header><span>Adopción</span><span>78%</span></header><div class="bar"><span style="width:78%"></span></div></div>
+            <div class="progress-item"><header><span>Documentación</span><span>91%</span></header><div class="bar"><span style="width:91%"></span></div></div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-top">
+            <div>
+              <h3>Motor de Consentimientos</h3>
+              <span class="domain-badge">Dominio: Privacidad / Clientes</span>
+            </div>
+            <span class="score">76%</span>
+          </div>
+          <p>Producto para consultar estado de consentimiento, finalidad, evidencia y trazabilidad de autorización.</p>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>58</strong><span>Usuarios activos</span></div>
+            <div class="mini-stat"><strong>33</strong><span>Consumidores recurrentes</span></div>
+            <div class="mini-stat"><strong>76%</strong><span>Usabilidad</span></div>
+          </div>
+          <div class="progress-block" style="margin-top:14px;">
+            <div class="progress-item"><header><span>Adopción</span><span>64%</span></header><div class="bar"><span style="width:64%"></span></div></div>
+            <div class="progress-item"><header><span>Calidad percibida</span><span>79%</span></header><div class="bar"><span style="width:79%"></span></div></div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-top">
+            <div>
+              <h3>Panel Originación Crédito</h3>
+              <span class="domain-badge">Dominio: Crédito</span>
+            </div>
+            <span class="score">71%</span>
+          </div>
+          <p>Dataset y capa analítica para seguimiento de funnel de originación, aprobaciones y tiempos de respuesta.</p>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>94</strong><span>Usuarios activos</span></div>
+            <div class="mini-stat"><strong>51</strong><span>Consumidores recurrentes</span></div>
+            <div class="mini-stat"><strong>71%</strong><span>Usabilidad</span></div>
+          </div>
+          <div class="progress-block" style="margin-top:14px;">
+            <div class="progress-item"><header><span>Adopción</span><span>69%</span></header><div class="bar"><span style="width:69%"></span></div></div>
+            <div class="progress-item"><header><span>Satisfacción usuario</span><span>73%</span></header><div class="bar"><span style="width:73%"></span></div></div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-top">
+            <div>
+              <h3>Monitor de Mora Temprana</h3>
+              <span class="domain-badge">Dominio: Riesgo / Cobranzas</span>
+            </div>
+            <span class="score">79%</span>
+          </div>
+          <p>Producto analítico para seguimiento preventivo de mora, cohortes y comportamiento por segmento.</p>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>61</strong><span>Usuarios activos</span></div>
+            <div class="mini-stat"><strong>40</strong><span>Consumidores recurrentes</span></div>
+            <div class="mini-stat"><strong>79%</strong><span>Usabilidad</span></div>
+          </div>
+          <div class="progress-block" style="margin-top:14px;">
+            <div class="progress-item"><header><span>Adopción</span><span>72%</span></header><div class="bar"><span style="width:72%"></span></div></div>
+            <div class="progress-item"><header><span>Reutilización</span><span>68%</span></header><div class="bar"><span style="width:68%"></span></div></div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-top">
+            <div>
+              <h3>Mart Financiero Gerencial</h3>
+              <span class="domain-badge">Dominio: Finanzas</span>
+            </div>
+            <span class="score">88%</span>
+          </div>
+          <p>Producto con indicadores financieros homologados para reporting gerencial y análisis periódico.</p>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>44</strong><span>Usuarios activos</span></div>
+            <div class="mini-stat"><strong>36</strong><span>Consumidores recurrentes</span></div>
+            <div class="mini-stat"><strong>88%</strong><span>Usabilidad</span></div>
+          </div>
+          <div class="progress-block" style="margin-top:14px;">
+            <div class="progress-item"><header><span>Adopción</span><span>83%</span></header><div class="bar"><span style="width:83%"></span></div></div>
+            <div class="progress-item"><header><span>Confiabilidad percibida</span><span>92%</span></header><div class="bar"><span style="width:92%"></span></div></div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-top">
+            <div>
+              <h3>Registro Actividades de Tratamiento</h3>
+              <span class="domain-badge">Dominio: Privacidad</span>
+            </div>
+            <span class="score">67%</span>
+          </div>
+          <p>Producto para consulta de tratamientos, finalidades, bases legales y responsables asociados.</p>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>53</strong><span>Usuarios activos</span></div>
+            <div class="mini-stat"><strong>22</strong><span>Consumidores recurrentes</span></div>
+            <div class="mini-stat"><strong>67%</strong><span>Usabilidad</span></div>
+          </div>
+          <div class="progress-block" style="margin-top:14px;">
+            <div class="progress-item"><header><span>Adopción</span><span>55%</span></header><div class="bar"><span style="width:55%"></span></div></div>
+            <div class="progress-item"><header><span>Madurez de servicio</span><span>61%</span></header><div class="bar"><span style="width:61%"></span></div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="adopcion" class="section">
+      <div class="layout">
+        <div>
+          <div class="section-card">
+            <h2 class="section-title">Adopción por dominio</h2>
+            <p class="section-subtitle">Vista agregada para entender dónde la democratización está generando consumo real.</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Dominio</th>
+                  <th>Productos</th>
+                  <th>Usuarios activos</th>
+                  <th>Consumidores recurrentes</th>
+                  <th>Usabilidad promedio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Clientes</td>
+                  <td>4</td>
+                  <td>162</td>
+                  <td>103</td>
+                  <td>80%</td>
+                </tr>
+                <tr>
+                  <td>Crédito</td>
+                  <td>3</td>
+                  <td>117</td>
+                  <td>66</td>
+                  <td>73%</td>
+                </tr>
+                <tr>
+                  <td>Riesgo / Cobranzas</td>
+                  <td>4</td>
+                  <td>88</td>
+                  <td>57</td>
+                  <td>77%</td>
+                </tr>
+                <tr>
+                  <td>Finanzas</td>
+                  <td>2</td>
+                  <td>44</td>
+                  <td>36</td>
+                  <td>88%</td>
+                </tr>
+                <tr>
+                  <td>Privacidad</td>
+                  <td>2</td>
+                  <td>78</td>
+                  <td>34</td>
+                  <td>71%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="banner">
+            <div>
+              <h3>Qué debería permitir esta capa</h3>
+              <p>Filtrar por dominio, ordenar por usabilidad o usuarios activos, y entrar a la ficha detallada de cada producto de datos.</p>
+            </div>
+            <a class="btn btn-primary" href="#desarrollo">Ver pipeline en desarrollo</a>
+          </div>
+        </div>
+
+        <aside class="grid-2" style="grid-template-columns: 1fr;">
+          <div class="side-card">
+            <h3>Métricas sugeridas</h3>
+            <div class="side-list">
+              <div class="side-item"><strong>Usabilidad</strong><p>Score derivado de feedback, facilidad de consumo, documentación y soporte.</p></div>
+              <div class="side-item"><strong>Usuarios activos</strong><p>Usuarios únicos que consultan o consumen el producto en un período definido.</p></div>
+              <div class="side-item"><strong>Consumidores recurrentes</strong><p>Usuarios con uso repetido semanal o mensual, señal de adopción real.</p></div>
+            </div>
+          </div>
+          <div class="side-card">
+            <h3>Indicadores de valor</h3>
+            <div class="side-list">
+              <div class="side-item"><strong>Reutilización</strong><p>Cuántos equipos usan el mismo producto sin replicar lógica.</p></div>
+              <div class="side-item"><strong>Time-to-data</strong><p>Reducción del tiempo para acceder a información útil.</p></div>
+              <div class="side-item"><strong>Coverage</strong><p>Cuántos dominios tienen productos publicados y consumibles.</p></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="desarrollo" class="section">
+      <h2 class="section-title">Proyectos en desarrollo</h2>
+      <p class="section-subtitle">
+        Aquí el foco cambia desde la adopción hacia la ejecución. Cada iniciativa debe mostrar avance real versus avance planificado,
+        hitos, dependencias y semáforo de cumplimiento.
+      </p>
+
+      <div class="pipeline-grid">
+        <article class="pipeline-card">
+          <div class="pipeline-top">
+            <div>
+              <h3>Producto de Datos de Contactabilidad Omnicanal</h3>
+              <span class="domain-badge">Dominio: Clientes</span>
+            </div>
+            <span class="status warn">En desarrollo</span>
+          </div>
+          <p>Consolidación de atributos de contacto, preferencia y trazabilidad de actualización para canales digitales y presenciales.</p>
+          <div class="progress-block">
+            <div class="progress-item"><header><span>Avance real</span><span>62%</span></header><div class="bar"><span style="width:62%"></span></div></div>
+            <div class="progress-item"><header><span>Avance planificado</span><span>70%</span></header><div class="bar"><span style="width:70%"></span></div></div>
+          </div>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>-8 pp</strong><span>Brecha vs plan</span></div>
+            <div class="mini-stat"><strong>Q3</strong><span>Go-live objetivo</span></div>
+            <div class="mini-stat"><strong>Media</strong><span>Riesgo</span></div>
+          </div>
+        </article>
+
+        <article class="pipeline-card">
+          <div class="pipeline-top">
+            <div>
+              <h3>Producto Score de Originación Unificado</h3>
+              <span class="domain-badge">Dominio: Crédito</span>
+            </div>
+            <span class="status good">En línea</span>
+          </div>
+          <p>Estandarización de métricas de originación, estados de evaluación y trazabilidad del funnel de crédito.</p>
+          <div class="progress-block">
+            <div class="progress-item"><header><span>Avance real</span><span>79%</span></header><div class="bar"><span style="width:79%"></span></div></div>
+            <div class="progress-item"><header><span>Avance planificado</span><span>76%</span></header><div class="bar"><span style="width:76%"></span></div></div>
+          </div>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>+3 pp</strong><span>Brecha vs plan</span></div>
+            <div class="mini-stat"><strong>Q3</strong><span>Go-live objetivo</span></div>
+            <div class="mini-stat"><strong>Bajo</strong><span>Riesgo</span></div>
+          </div>
+        </article>
+
+        <article class="pipeline-card">
+          <div class="pipeline-top">
+            <div>
+              <h3>Base Única de Clientes v2</h3>
+              <span class="domain-badge">Dominio: Clientes</span>
+            </div>
+            <span class="status warn">En desarrollo</span>
+          </div>
+          <p>Evolución del producto maestro con matching avanzado, consolidación de identidades y atributos enriquecidos.</p>
+          <div class="progress-block">
+            <div class="progress-item"><header><span>Avance real</span><span>48%</span></header><div class="bar"><span style="width:48%"></span></div></div>
+            <div class="progress-item"><header><span>Avance planificado</span><span>55%</span></header><div class="bar"><span style="width:55%"></span></div></div>
+          </div>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>-7 pp</strong><span>Brecha vs plan</span></div>
+            <div class="mini-stat"><strong>Q4</strong><span>Go-live objetivo</span></div>
+            <div class="mini-stat"><strong>Alta</strong><span>Riesgo</span></div>
+          </div>
+        </article>
+
+        <article class="pipeline-card">
+          <div class="pipeline-top">
+            <div>
+              <h3>Marketplace de Productos de Datos</h3>
+              <span class="domain-badge">Dominio: Transversal</span>
+            </div>
+            <span class="status good">En diseño</span>
+          </div>
+          <p>Portal de descubrimiento y autoservicio para navegar productos por dominio, owner, criticidad y nivel de servicio.</p>
+          <div class="progress-block">
+            <div class="progress-item"><header><span>Avance real</span><span>36%</span></header><div class="bar"><span style="width:36%"></span></div></div>
+            <div class="progress-item"><header><span>Avance planificado</span><span>34%</span></header><div class="bar"><span style="width:34%"></span></div></div>
+          </div>
+          <div class="split-stats">
+            <div class="mini-stat"><strong>+2 pp</strong><span>Brecha vs plan</span></div>
+            <div class="mini-stat"><strong>Q4</strong><span>Go-live objetivo</span></div>
+            <div class="mini-stat"><strong>Media</strong><span>Riesgo</span></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="grid-2" style="margin-top:18px;">
+        <div class="section-card">
+          <h3>Seguimiento de hitos</h3>
+          <div class="milestone-list">
+            <div class="milestone-item"><strong>Diseño funcional</strong><p>Definición de casos de uso, usuarios y data contract por producto.</p></div>
+            <div class="milestone-item"><strong>Desarrollo e integración</strong><p>Construcción del producto, pruebas y validación con dominio.</p></div>
+            <div class="milestone-item"><strong>Documentación y onboarding</strong><p>Activos de descubrimiento, guía de uso y soporte inicial.</p></div>
+            <div class="milestone-item"><strong>Go-live y adopción</strong><p>Seguimiento de consumo y estabilización post-publicación.</p></div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h3>Lectura recomendada del avance</h3>
+          <div class="side-list">
+            <div class="side-item"><strong>Avance real</strong><p>% efectivamente ejecutado según hitos completados.</p></div>
+            <div class="side-item"><strong>Avance planificado</strong><p>% esperado para la fecha de corte definida.</p></div>
+            <div class="side-item"><strong>Brecha vs plan</strong><p>Diferencia entre ambos para activar gestión temprana.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">Template HTML para la sección de Democratización de Datos con portafolio publicado, métricas de adopción y pipeline de desarrollo.</div>
+  </footer>
+  <script src="shared-nav.js"></script>
+</body>
+</html>
