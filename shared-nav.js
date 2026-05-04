@@ -5,7 +5,6 @@
 
   var pages = [
     { id: 'index',                       label: 'Inicio',              href: 'index.html' },
-    { id: 'data_office_portal',          label: 'Portal Data Office',  href: 'data_office_portal.html' },
     { id: 'democratizacion_datos',       label: 'Democratización',     href: 'democratizacion_datos.html' },
     { id: 'glosario_negocio',            label: 'Glosario',            href: 'glosario_negocio.html' },
     { id: 'comex_fbpengine_dictionary',  label: 'Diccionario COMEX',   href: 'comex_fbpengine_dictionary.html' },
