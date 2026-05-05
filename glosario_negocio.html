@@ -364,21 +364,895 @@
 
 <script>
 const RAW = [
-  ["accidente","Es todo suceso imprevisto, involuntario, repentino, fortuito, causado por medios externos que afecten en su organismo al asegurado, causándole algún daño."],
-  ["acrecer","Percibir un beneficiario la parte que le corresponde a otro, dado que éste último renuncia a esta parte o ha fallecido."],
-  ["activos","Suma de los bienes de una persona que posea un valor monetario. Se incluyen propiedades, acciones, depósitos a plazo, libretas de ahorro, cuotas de fondos mutuos, bonos, etc."],
-  ["adición saldada","Si una vez prorrogado un seguro, el nuevo seguro de protección dura todo el período de vigencia, y sobra alguna cantidad de dinero de los valores garantizados utilizados en la prórroga, a estos dineros se les denomina Adición Saldada."],
+  ["Accidente","Es todo suceso imprevisto, involuntario, repentino, fortuito, causado por medios externos que afecten en su organismo al asegurado, causándole algún daño."],
+  ["Acrecer","Percibir un beneficiario la parte que le corresponde a otro, dado que éste último renuncia a esta parte o ha fallecido."],
+  ["Activos","Suma de los bienes de una persona que posea un valor monetario. Se incluyen propiedades, acciones, depósitos a plazo, libretas de ahorro, cuotas de fondos mutuos, bonos, etc."],
+  ["Adición saldada","Si una vez prorrogado un seguro, el nuevo seguro de protección dura todo el período de vigencia, y sobra alguna cantidad de dinero de los valores garantizados utilizados en la prórroga, a estos dineros se les denomina Adición Saldada."],
   ["Administradoras de Fondos de Pensiones, A.F.P.","Administradoras de Fondos de Pensiones, denominadas también Administradoras o AFP, son sociedades anónimas que tienen por objeto exclusivo administrar un Fondo de Pensiones, y otorgar y administrar las prestaciones y beneficios que establece el referido cuerpo legal a los cotizantes. De alguna forma reemplazan las antiguas Cajas de Previsión."],
   ["Administradoras de Fondos de Pensiones, A.F.P.","Trabajador que cotiza en un determinado sistema de previsión."],
-  ["afiliación al nuevo sistema previsional","Es el vínculo entre el trabajador y el sistema previsional que da derecho a recibir una pensión de vejez, invalidez o sobrevivencia y genera la obligación de cotizar por parte del trabajador. Es única y permanente y se produce automáticamente cuando un trabajador inicia labores como dependiente o cuando paga la primera cotización si es independiente."],
-  ["amortización","Pago de la proporción del capital calculado de manera que sumado a los intereses se extingue la deuda al final de un plazo determinado."],
-  ["antecedentes comerciales","Historial público que muestra el cumplimiento de las obligaciones financieras."],
-  ["antecedentes comerciales","Significa que jamás ha habido un contrato, solo existen papeles firmados. Lo que ha habido es un NO CONTRATO."],
-  ["áreas comunes","Parte de un conjunto habitacional o edificio, que incluye vías de acceso, pasillos, halls de entrada o distribución, ascensores y otro tipo de equipamiento tales como piscina, gimnasio, salas de eventos, jardines, etc. Son de uso público para todos los propietarios, quienes comparten los gastos comunes de su operación y mantenimiento."],
-  ["asegurable","Persona o bien que reúne las características predeterminadas para ser objeto de la cobertura de un seguro (luego de la suscripción del contrato se convierte en Asegurado)."],
-  ["asegurado (ex asegurable)","Persona sobre cuyo riesgo se toma el seguro. En sentido estricto es la persona sobre la que recae la cobertura del seguro. En el caso de Seguros Generales es el bien o patrimonio objeto del seguro."],
-  ["asegurador","Empresa (compañía) que asume la cobertura del riesgo, es decir, que se compromete a otorgar una prestación que indemnice daños o pérdidas que ese riesgo pudiera ocasionar."],
-  ["aval","Tercero que garantiza un crédito, obligándose al servicio del mismo si el deudor principal no lo hiciese."]
+  ["Afiliación al nuevo sistema previsional","Es el vínculo entre el trabajador y el sistema previsional que da derecho a recibir una pensión de vejez, invalidez o sobrevivencia y genera la obligación de cotizar por parte del trabajador. Es única y permanente y se produce automáticamente cuando un trabajador inicia labores como dependiente o cuando paga la primera cotización si es independiente."],
+  ["Amortización","Pago de la proporción del capital calculado de manera que sumado a los intereses se extingue la deuda al final de un plazo determinado."],
+  ["Antecedentes comerciales","Historial público que muestra el cumplimiento de las obligaciones financieras."],
+  [
+    "accidente",
+    "Es todo suceso imprevisto, involuntario, repentino, fortuito, causado por medios externos que afecten en su organismo al asegurado, causándole algún daño."
+  ],
+  [
+    "acrecer",
+    "Percibir un beneficiario la parte que le corresponde a otro, dado que éste último renuncia a esta parte o ha fallecido."
+  ],
+  [
+    "activos",
+    "Suma de los bienes de una persona que posea un valor monetario. Se incluyen propiedades, acciones, depósitos a plazo, libretas de ahorro, cuotas de fondos mutuos, bonos, etc."
+  ],
+  [
+    "adición saldada",
+    "Si una vez prorrogado un seguro, el nuevo seguro de protección dura todo el período de vigencia, y sobra alguna cantidad de dinero de los valores garantizados utilizados en la prórroga, a estos dineros se les denomina Adición Saldada ."
+  ],
+  [
+    "Administradoras de Fondos de Pensiones, A.F.P.",
+    "Administradoras de Fondos de Pensiones, denominadas también Administradoras o AFP, son sociedades anónimas que tienen por objeto exclusivo administrar un Fondo de Pensiones, y otorgar y administrar las prestaciones y beneficios que establece el referido cuerpo legal a los cotizantes. De alguna forma reemplazan las antiguas Cajas de Previsión."
+  ],
+  [
+    "Administradoras de Fondos de Pensiones, A.F.P.",
+    "trabajador que cotiza en un determinado sistema de previsión."
+  ],
+  [
+    "afiliación al nuevo sistema previsional",
+    "Es el vínculo entre el trabajador y el sistema previsional que da derecho a recibir una pensión de vejez, invalidez o sobrevivencia y genera la obligación de cotizar por parte del trabajador. Es única y permanente y se produce automáticamente cuando un trabajador inicia labores como dependiente o cuando paga la primera cotización si es independiente."
+  ],
+  [
+    "amortización",
+    "Pago de la proporción del capital calculado de manera que sumado a los intereses se extingue la deuda al final de un plazo determinado."
+  ],
+  [
+    "antecedentes comerciales",
+    "Historial publico que muestra el cumplimiento de las obligaciones financieras."
+  ],
+  [
+    "antecedentes comerciales",
+    "Significa que jamás ha habido un contrato, solo existen papeles firmados. Lo que ha habido es un NO CONTRATO."
+  ],
+  [
+    "areas comunes",
+    "Parte de un conjunto habitacional o edificio, que incluye vías de acceso, pasillos, halls de entrada o distribución, ascensores y otro tipo de equipamiento tales como piscina, gimnasio, salas de eventos, jardines, etc. Son de uso público para todos los propietarios, quienes comparten los gastos comunes de su operación y mantenimiento."
+  ],
+  [
+    "asegurable",
+    "Persona o bien que reúne las características predeterminadas para ser objeto de la cobertura de un seguro (luego de la suscripción del contrato se convierte en Asegurado)."
+  ],
+  [
+    "asegurado (ex asegurable)",
+    "Persona sobre cuyo riesgo se toma el seguro. En sentido estricto es la persona sobre la que recae la cobertura del seguro. En el caso de Seguros Generales es el bien o patrimonio objeto del seguro"
+  ],
+  [
+    "asegurador",
+    "Empresa (compañía) que asume la cobertura del riesgo , es decir, que se compromete a otorgar una prestación que indemnice daños o pérdidas que ese riesgo pudiera ocasionar."
+  ],
+  [
+    "aval",
+    "Tercero que garantiza un crédito, obligándose al servicio del mismo si el deudor principal no lo hiciese."
+  ],
+  [
+    "balance",
+    "Informe contable donde aparecen los activos, pasivos y patrimonio neto de una empresa."
+  ],
+  [
+    "beneficiario",
+    "Persona, natural o jurídica , que ha designado quien contrata el seguro, para recibir la indemnización pactada (o capital asegurado) en caso de producirse un siniestro."
+  ],
+  [
+    "beneficiarios de pensión",
+    "Componentes del grupo familiar a quienes tras la muerte del afiliado les corresponde recibir la pensión. Pueden ser la cónyuge, el cónyuge inválido, los hijos menores de 18 años, los hijos estudiantes mayores de 18 y menores de 24 años, la madre de los hijos naturales y los padres del afiliado a falta de los anteriores, y siempre que sean causantes de asignación familiar."
+  ],
+  [
+    "beneficios previsionales otorgados por las A.F.P.",
+    "Las Administradoras de Fondos de Pensiones administran y otorgan sólo los beneficios de Pensiones de Vejez, Invalidez y Sobrevivencia"
+  ],
+  [
+    "balance",
+    "Las Administradoras de Fondos de Pensiones administran y otorgan sólo los beneficios de Pensiones de Vejez, Invalidez y Sobrevivencia"
+  ],
+  [
+    "bonos",
+    "Instrumento de inversión, que certifica que un gobierno o empresa contrajo una deuda con vencimiento otorgando intereses."
+  ],
+  [
+    "bono de reconocimiento",
+    "Representa los períodos de imposiciones que tuvo el trabajador en el antiguo régimen de previsión. Es emitido por el Instituto de Normalización Previsional (INP), se reajusta cada año un 4% anual más IPC y se hace efectivo cuando el afiliado cumple la edad legal para pensionarse, fallece o se pensiona por invalidez."
+  ],
+  [
+    "caducar",
+    "Poner fin a un contrato existente."
+  ],
+  [
+    "capital asegurado",
+    "Monto fijo pactado en UF, que no se altera durante toda la vigencia del seguro y que hace posible su tarificación."
+  ],
+  [
+    "capitalización individual",
+    "Es el ahorro acumulado en la cuenta personal de cada cotizante."
+  ],
+  [
+    "cálculo de probabilidades",
+    "Reglas que permiten establecer el porcentaje de probabilidad que hay de que ocurra un evento."
+  ],
+  [
+    "carpeta de crédito",
+    "Debe estar compuesta de:\nSolicitud de Crédito. \nAntecedentes personales del solicitante y del codeudor de haberlo.\nAcreditación del cliente y su estado civil.\nestado de situación.\nCertificado de ingresos y antigüedad laboral.\nInforme de tasación del bien raíz.\nCarta autorización para contratación de seguros.\nCarta autorización Superintendencia de Bancos."
+  ],
+  [
+    "cedente",
+    "Persona que transfiere a un tercero (llamado Cesionario ) todos o algunos de los derechos, privilegios y opciones de una póliza ."
+  ],
+  [
+    "certificado de cobertura",
+    "Notificación que envía el asegurador al contratante , informando que ha aceptado los riesgos contratados. Esta carta fija la fecha de inicio del plazo pactado de cobertura."
+  ],
+  [
+    "cesión",
+    "Ceder parte o el total de los derechos que un contratante tiene en una póliza de seguros."
+  ],
+  [
+    "cesionario",
+    "Persona en cuyo favor se hace cesión de los privilegios, derechos y opciones de la póliza."
+  ],
+  [
+    "cierre de la operación",
+    "Momento en que tanto el comprador y el vendedor como las entidades financieras firman la escritura de compraventa, constitución del mutuo e hipoteca en la Notaría."
+  ],
+  [
+    "cláusula",
+    "Cada una de las disposiciones de un contrato ."
+  ],
+  [
+    "cobertura",
+    "Tipo, magnitud, plazo y condición del riesgo que el contratante desea proteger y el asegurador se compromete a indemnizar si ocurre, dentro de los términos pactados."
+  ],
+  [
+    "cobertura adicional",
+    "Cláusula accesoria que se añade al seguro de vida y que se contrata para cubrir riesgos no incluidos en el seguro o cobertura principal. No se puede contratar separado del seguro de vida básico."
+  ],
+  [
+    "cobertura principal",
+    "Las características del riesgo básico o primero que cubre una póliza."
+  ],
+  [
+    "comisión de prepago",
+    "Es un costo financiero en que debe incurrir el deudor en el caso de efectuar anticipadamente pagos totales o parciales del crédito. Este asciende a un trimestre de intereses."
+  ],
+  [
+    "comisión del corredor",
+    "Honorarios cobrados por un intermediario que se calculan como un porcentaje del precio."
+  ],
+  [
+    "condiciones generales",
+    "Condiciones comunes a todas las pólizas pertenecientes a un mismo tipo de seguros. Por ejemplo: Definición del plan, extensión de la póliza, etc."
+  ],
+  [
+    "condiciones particulares",
+    "Condiciones que pertenecen especial y exclusivamente a una póliza. Por ejemplo: Nombre del asegurado, capital contratado, etc."
+  ],
+  [
+    "conjetura",
+    "Presunción fundada en probabilidades."
+  ],
+  [
+    "conservador de bienes raíces",
+    "Organismo que se encarga de inscribir las transferencias de dominio de propiedades y los gravámenes que las afecten, con el propósito de dar certeza y seguridad jurídica a las operaciones de compraventa. Las inscripciones tiene un costo en relación al valor de la propiedad que se inscribe y si está sujeta o no al DFL2. Mantiene el historial de cada propiedad, emite certificados de inscripciones de dominio, certificados de hipotecas y gravámenes, prohibición de enajenar etc."
+  ],
+  [
+    "consolidación de deudas",
+    "Consiste en fusionar en un total, las diferentes deudas con distintos plazos y montos."
+  ],
+  [
+    "contingencia",
+    "Algo que puede suceder o no."
+  ],
+  [
+    "contratante",
+    "Persona natural o jurídica que ha firmado un contrato de seguro, comprometiéndose a pagar el precio (prima) que el asegurador cobra por la prestación. No siempre el contratante y el asegurado son la misma persona, esto solo ocurre si el contratante ha tomado el seguro para sí mismo."
+  ],
+  [
+    "contrato",
+    "Pacto entre dos o más personas; documento que lo acredita."
+  ],
+  [
+    "contrato nulo",
+    "Significa que jamás ha habido contrato (solo existen papeles firmados). Lo que ha habido es un No Contrato."
+  ],
+  [
+    "convertibilidad",
+    "Capacidad para convertirse en otro plan de seguro."
+  ],
+  [
+    "corredor de propiedades",
+    "Intermediario experto en la compra y venta de propiedades por cuenta de terceros."
+  ],
+  [
+    "costos de cobertura",
+    "Monto mensual que se deduce de la póliza para cubrir los riesgos contratados. En su mayoría son una tasa que depende de la edad del asegurado y que se aplica sobre el capital de cada cobertura ."
+  ],
+  [
+    "costos fijos por póliza",
+    "Corresponde a los gastos del asegurador asociados a los planes de ahorro (por ej. en nuestro Seguro Vida Activa). Equivale a un descuento fijo que hace la compañía sobre el valor póliza ."
+  ],
+  [
+    "costos sobre capital asegurado",
+    "Gastos del asegurador asociados a los planes de protección (por ej. en nuestro Seguro Vida Activa); equivale a un descuento mensual sobre el valor póliza ."
+  ],
+  [
+    "cotizante",
+    "Afiliado. Persona que hace depósitos o cotiza en un determinado sistema de previsión."
+  ],
+  [
+    "cotizaciones obligatorias",
+    "Son las cotizaciones que deben pagar los trabajadores o pensionados del sistema previsional actual. Mientras no se pensione, la cotización obligatoria del trabajador será, en promedio, un 19,51% de su renta imponible 7% para salud, 10% para su cuenta de capitalización individual y 2,51% como comisión de la A.F.P. Los pensionados y afiliados que ya han cumplido la edad legal para pensionarse sólo están obligados a cotizar para salud."
+  ],
+  [
+    "cotizaciones voluntarias",
+    "Son las cotizaciones que libremente puede hacer un afiliado en su cuenta individual, por sobre la obligatoria, con el objeto de anticipar o aumentar su pensión. Están exentas de impuesto hasta un tope determinado por la diferencia entre la renta imponible del afiliado y los descuentos legales (salud y AFP) que la afectan."
+  ],
+  [
+    "cotización adicional",
+    "Es un porcentaje de la remuneración imponible que se paga junto con la cotización obligatoria, determinado por cada AFP para su financiamiento, que incluye el pago de la prima del Seguro de Invalidez y Sobrevivencia."
+  ],
+  [
+    "crédito",
+    "Préstamo que otorga una entidad financiera."
+  ],
+  [
+    "crédito hipotecario",
+    "Es una operación crediticia mediante la cual una institución financiera otorga fondos a un cliente, constituyendo una garantía mediante la hipoteca de un bien raíz."
+  ],
+  [
+    "cuenta de ahorro voluntario",
+    "Es una cuenta independiente de la Cuenta de Capitalización Individual, que un afiliado puede abrir en su AFP como inversión y se caracteriza por:\nSe puede depositar cualquier monto las veces que el afiliado lo estime conveniente.\nPuede retirar dinero cuando lo desee con un tope de cuatro giros al año.\nLos depósitos se convierten a su equivalente en cuotas de Fondos de Pensiones y obtienen la misma rentabilidad del fondo.\nEs embargable con orden judicial, como las demás inversiones.\nNo tiene costo de mantención."
+  ],
+  [
+    "cuenta de capitalización individual",
+    "Es la cuenta personal en que se registran las cotizaciones obligatorias y voluntarias, y en la cual se acumula el capital para financiar la pensión del afiliado."
+  ],
+  [
+    "cuestionario y exámen médico (c.e.m.)",
+    "Documento que debe utilizarse solo por el médico evaluador de la compañía, en aquellos casos que así lo indique la T.E.M (Tabla de Exigencias Médicas). Contendrá datos similares a los que figuran en una D.P.S. (Declaración Personal de Salud), más los resultados del reconocimiento médico correspondiente."
+  ],
+  [
+    "cuota",
+    "Para una mejor distribución de la rentabilidad entre las Cuentas de Capitalización Individual, el monto total del Fondo está expresado en cuotas. Cada afiliado es dueño de un determinado número de cuotas, de acuerdo al monto del capital acumulado en su Cuenta, el que le es informado cada cuatro meses, mediante la cartola cuatrimestral. De esta manera, la rentabilidad obtenida por el Fondo incrementa el valor de la cuota y su distribución entre los afiliados es equitativa y transparente."
+  ],
+  [
+    "cuota mortuoria",
+    "Beneficio equivalente hasta un máximo de 15 UF que recibe el beneficiario de un trabajador fallecido o quien acredite haberse hecho cargo de los gastos del funeral, con cargo a su cuenta en la AFP o a la Cía. de Seguros si es pensionado de renta vitalicia."
+  ],
+  [
+    "daño",
+    "Deterioro, perjuicio, avería, destrozo, pérdida, molestia."
+  ],
+  [
+    "declaración personal de salud (d.p.s)",
+    "Declaración jurada, firmada por el asegurable , que contiene sus antecedentes médicos personales y familiares."
+  ],
+  [
+    "derecho a cesión",
+    "Derecho que tiene el contratante de una póliza a ceder (cedente) a un tercero (cesionario) , el total o parte de los derechos que le da el contrato ."
+  ],
+  [
+    "deducir",
+    "Rebajar, restar."
+  ],
+  [
+    "depósito",
+    "Suma de dinero entregada a una institución financiera, con el propósito de generar intereses."
+  ],
+  [
+    "depósitos de ahorro voluntario",
+    "Dinero que se deposita directamente en la cuenta de ahorro voluntario en la Administradora, utilizando un comprobante especial para tal efecto, o bien a través del Empleador. En este caso, el trabajador autoriza por escrito al Empleador para que le descuente de su remuneración una suma mensual y sea depositada en la Administradora."
+  ],
+  [
+    "depósitos convenidos",
+    "Son aportes en dinero, con cargo al empleador, cuyo objetivo es aumentar el capital requerido para financiar una pensión (y solo con ese fin) anticipada o para incrementar el monto de la pensión."
+  ],
+  [
+    "depreciación",
+    "Perdida del valor que puede afectar a un activo a través del tiempo."
+  ],
+  [
+    "diferir",
+    "Dilatar, retrasar, demorar, correr para más adelante."
+  ],
+  [
+    "dividendo hipotecario",
+    "Cuota que paga el deudor por el préstamo hipotecario, incluye el pago de capital, intereses, seguro de desgravamen e incendio."
+  ],
+  [
+    "D.F.L. 2",
+    "Decreto con Fuerza de Ley Nro. 2 de 1959,que otorga los siguientes beneficios tributarios a las propiedades por el amparados \nExcención de pago de contribuciones por un período de 20 años.\nDisminución del costo de inscripción de la propiedad en el Conservador de Bienes Raices de un 0.2% a un 0.1% del valor de la propiedad.\nDisminución del Impuesto al crédito de un 1,2% a un 0,6% del monto del crédito solicitado."
+  ],
+  [
+    "edad actuarial",
+    "Para la Tarificación de un Seguro de vida, se utiliza la Edad Actuarial del asegurado . Esta es la edad correspondiente al cumpleaños más próximo, pasado o futuro, que en una determinada fecha tenga el asegurado. EJEMPLOS: \nEDAD REAL\nEDAD ACTUARIAL\n35 AÑOS 3 MESES - 35 AÑOS\n35 AÑOS 7 MESES - 36 AÑOS\n43 AÑOS 4 MESES - 43 AÑOS\n43 AÑOS 9 MESES - 44 AÑOS"
+  ],
+  [
+    "edad legal",
+    "Son las edades a las cuales los afiliados al sistema adquieren el derecho a pensión de vejez, 65 años en el caso de los hombre y 60 para las mujeres."
+  ],
+  [
+    "ejecución",
+    "Agotadas todas las instancias de cobranza extrajudicial, el juez decreta el remate de la propiedad procediéndose a la cancelación de una o más deudas."
+  ],
+  [
+    "emisión",
+    "Aprobada la solicitud de seguro, se procede a confeccionar la póliza y a enviarla al contratante . Esta gestión se llama Emisión de la Póliza ."
+  ],
+  [
+    "encaje",
+    "Norma establecida por el Banco Central, que obliga a las Instituciones Financieras a depositar un porcentaje de sus captaciones. Equivale a un porcentaje del dinero captado que se reajusta en un 50% del IPC del periodo mientras se mantenga el depósito."
+  ],
+  [
+    "endosar",
+    "Modificar los términos de un contrato. El contrato se mantiene vigente, pero con la o las modificaciones realizadas."
+  ],
+  [
+    "escritura de compraventa",
+    "Documento legal mediante el cual se transfiere el dominio de una propiedad. Una escritura individualiza la parte vendedora y compradora; describe detalladamente la materia de la compraventa fijando su precio y forma de pago, debiendo ser firmada ante Notario. La compraventa se perfecciona cuando la transferencia se inscribe en el Conservador de Bienes Raices."
+  ],
+  [
+    "escritura de compraventa, hipoteca y constitución del mutuo hipotecario",
+    "Al igual que una escritura de compraventa simple, es un documento legal mediante el cual se transfiere el dominio de una propiedad. Debe individualizar la parte vendedora y compradora; describe detalladamente la materia de la compraventa; fijando su precio y forma de pago; además se costituye un Mutuo Hipotecario endosable y su correspondiente hipoteca a favor de la institución que entera la parte del precio solicitada, debiendo en conjunto con las partes vendedora y compradora, comparecer a la firmar ante Notario. La compraventa se perfecciona cuando la transferencia, hipoteca y mutuo se inscriben en el Conservador de Bienes Raices."
+  ],
+  [
+    "estado de situación",
+    "Completo resumen valorizado de los activos y pasivos, tanto de largo como de corto plazo de una persona. Debe ser completado y firmado por el interesado."
+  ],
+  [
+    "estudio de títulos",
+    "Corresponde a la labor realizada por un abogado, verificando el saneamiento de hipotecas, gravámenes y prohibiciones por 30 años y la correspondencia en derecho de la propiedad de un bien raíz en un periodo de 10 años."
+  ],
+  [
+    "evaluación de riesgo",
+    "Proceso técnico que permite determinar, antes de emitir la póliza , en base a edad, estado de salud, actividad laboral y deportiva, etc., cuál es el riesgo que asumirá la compañía aseguradora en cada caso que se propone."
+  ],
+  [
+    "evaluación financiera",
+    "Evaluación económica del asegurable , que consta de informe comercial, evaluación de riesgos y estado de situación."
+  ],
+  [
+    "",
+    ""
+  ],
+  [
+    "excedente de libre disposición",
+    "Saldo en dinero que queda en la cuenta de capitalización individual del afiliado y que luego del trámite para obtener una pensión, puede entregársele si cumple determinados requisitos diez años de afiliación en cualquier sistema previsional, pensión obtenida igual o superior al 70% del promedio de las remuneraciones imponibles de los últimos 10 años y al 120% de la pensión mínima."
+  ],
+  [
+    "exclusión",
+    "Descripción de los riesgos no aceptados por la compañía."
+  ],
+  [
+    "Por ejemplo",
+    "suicidio antes de dos años de vigencia de la póliza ."
+  ],
+  [
+    "expectativas de vida",
+    "Son los años que se estima vivirá una persona, a partir de cierta edad, de acuerdo a las estadísticas de población registradas y establecidas por el I.N.E. Por ejemplo, un hombre de 65 años tiene una expectativa de vida de 16,65 años y una mujer de 60, tiene una expectativa de vida de 24,32 años."
+  ],
+  [
+    "extra prima",
+    "Recargo de dinero que se agrega a la prima por concepto de ampliar los beneficios del seguro, al agregarse cláusulas adicionales."
+  ],
+  [
+    "fijación de la tasa de interés",
+    "Es el compromiso de la institución financiera de garantizar al cliente una tasa de interés acordada, por un periodo de tiempo determinado."
+  ],
+  [
+    "fondo",
+    "Todas las cotizaciones previsionales de los afiliados a una A.F.P. forman el Fondo de Pensiones que ésta debe administrar e invertir convenientemente."
+  ],
+  [
+    "fondo de pensiones",
+    "Es el bien de cada afiliado que le permite generar una pensión, el afiliado dispone de este al momento de pensionarse."
+  ],
+  [
+    "garantía hipotecaria",
+    "Constituye la entrega de una propiedad como fuente de prepago ante la eventualidad de insolvencia económica por parte del deudor."
+  ],
+  [
+    "gastos comunes",
+    "Son todos aquellos gastos provenientes de la mantención, equipamiento y administración de espacios comunes que son objeto de una comunidad."
+  ],
+  [
+    "gastos operacionales básicos del crédito",
+    "Son los gastos en que debe incurrir un solicitante de crédito. Incluyen tasación, estudio de títulos, confección de la escritura, gastos notariales, inscripción de la propiedad, hipoteca e impuesto al mutuo."
+  ],
+  [
+    "hipoteca de primer grado o hipoteca cláusula de garantía específica",
+    "Es aquella donde la hipoteca garantiza el cumplimiento de un crédito u obligación en particular."
+  ],
+  [
+    "hipoteca de segundo grado o hipoteca cláusula garantía general",
+    "Es aquella donde la hipoteca garantiza el cumplimiento de todos y cada uno de los créditos y obligaciones que una persona mantenga, en el presente o futuro con una Institución Financiera."
+  ],
+  [
+    "IGPA",
+    "Índice general de precio de las acciones de la bolsa de comercio de Santiago."
+  ],
+  [
+    "impuesto de compraventa",
+    "Impuesto que grava el traspaso del dominio de una propiedad. En general corresponde al 0.2% del valor comercial de la propiedad y para propiedades DFL2 al 0.1% del mismo valor."
+  ],
+  [
+    "impuesto de timbres y estampillas",
+    "Impuesto que grava las operaciones de crédito. Es recaudado por las Instituciones Financieras por cuenta del Fisco. En general corresponde al 0,1% mensual del monto del crédito, no pudiendo exceder el 1,2% y para propiedades DFL2 el 0.6% del monto del crédito."
+  ],
+  [
+    "indemnización",
+    "Reparación de un daño o perjuicio. En el caso de un seguro, es la prestación que realiza el asegurador en caso de producirse el siniestro."
+  ],
+  [
+    "ingresos verificables",
+    "Ingresos que son demostrables o comprobables."
+  ],
+  [
+    "inciso",
+    "Parte en que se divide una cláusula."
+  ],
+  [
+    "indisputabilidad",
+    "Se aplica a algo que es indiscutible, que no admite cuestionamiento."
+  ],
+  [
+    "insolvencia",
+    "Incapacidad del pago de deudas."
+  ],
+  [
+    "intereses técnicos",
+    "La acumulación de excedentes en dinero, producida por las reservas matemáticas, se invierte generando intereses que se traspasan al asegurado a través de una rebaja en la prima. Estos intereses son los intereses técnicos."
+  ],
+  [
+    "intermediario",
+    "Persona o empresa que lleva o realiza una negociación entre dos partes."
+  ],
+  [
+    "invalidez, incapacidad",
+    "Se refiere a la condición de una persona que no tiene fuerza o capacidad para trabajar."
+  ],
+  [
+    "liquidez",
+    "Capacidad para convertir en dinero o en efectivo."
+  ],
+  [
+    "línea de edificación",
+    "Distanciamiento mínimo de una construcción con respecto al perímetro del terreno. Se define en planos reguladores o reglamentos de copropiedad."
+  ],
+  [
+    "modalidades de inversión",
+    "En las pólizas de seguros tipo Vida Activa, el contratante puede seleccionar cómo se invierte su valor póliza (instrumentos financieros de renta fija, variable o mixta)."
+  ],
+  [
+    "modalidades de pensión",
+    "Son las cuatro alternativas mediante las cuales los afiliados y beneficiarios pueden hacer efectivas sus pensiones"
+  ],
+  [
+    "modalidad garantizada",
+    "Modalidad de inversión que sólo considera instrumentos financieros de renta fija. Tiene rentabilidad mínima garantizada y el valor póliza rentabilizará el 90% de la TIP (tasa de interés promedio de captación para operaciones reajustables entre 90 y 365 días)."
+  ],
+  [
+    "modalidad mixta",
+    "modalidad de inversión que considera, en una proporción de la cartera, tipos de instrumentos financieros de renta variable. No tiene rentabilidad mínima garantizada. Se toma el 88% del valor póliza y éste rentabilizará un 90% de la TIP (tasa de interés promedio de captación para operaciones reajustables entre 90 y 365 días). El 12% restante rentabilizará un 90% del IGPA (índice general de precio de acciones)."
+  ],
+  [
+    "monto asegurado",
+    "Monto de la compensación económica pactada (a ser pagada a los beneficiarios) en un seguro de vida, al momento de fallecer el asegurado."
+  ],
+  [
+    "monto asegurado en riesgo",
+    "Diferencia entre el monto asegurado y el valor póliza."
+  ],
+  [
+    "morosidad",
+    "Retraso en el pago estipulado en el contrato."
+  ],
+  [
+    "novación",
+    "Es cuando el comprador se hace cargo del crédito hipotecario que mantiene vigente el vendedor sobre la propiedad objeto de la compraventa."
+  ],
+  [
+    "persistencia",
+    "Cualidad de mantener constante la vigencia de un seguro en el tiempo."
+  ],
+  [
+    "pago contado o pie",
+    "Corresponde a la parte del precio que se paga en efectivo. Por lo general sobrepasa el 20% del precio de compraventa."
+  ],
+  [
+    "patrimonio neto",
+    "Diferencia entre el valor de los bienes o activos y las deudas o pasivos."
+  ],
+  [
+    "pensión de invalidez",
+    "Es el derecho que tiene el afiliado al Nuevo Sistema a recibir un ingreso mensual, por haber sido declarado inválido mediante dictamen de alguna de las Comisiones Médicas dependientes de la Superintendencia de AFP. A partir de agosto de 1990, estas pensiones de invalidez se otorgan primero en forma \"transitoria\" por un período de tres años, al cabo de los cuales se reevalúa el grado de invalidez y se otorga la pensión de invalidez \"definitiva\", si corresponde."
+  ],
+  [
+    "pensión de sobrevivencia",
+    "Es el derecho adquirido por los beneficiarios de un trabajador para recibir una pensión luego de su fallecimiento."
+  ],
+  [
+    "pensión de vejez",
+    "beneficio establecido en el decreto 3500, que permite a los trabajadores obtener una pensión, cuando se han cumplido 65 años en el caso de los hombres y 60 años, si es mujer."
+  ],
+  [
+    "pensión de vejez anticipada",
+    "Los afiliados al Nuevo Sistema pueden pensionarse por Vejez Anticipada cuando los fondos de su Cuenta Individual les permitan obtener una pensión igual o superior al 50% del promedio de sus Rentas Imponibles de los últimos diez años y al 110% de la Pensión Mínima de Vejez garantizada por el Estado."
+  ],
+  [
+    "pensionado",
+    "Categoría legal que adquieren todos los afiliados o sus beneficiarios al momento de recibir una pensión."
+  ],
+  [
+    "persona jurídica",
+    "Entidad creada por la ley, capaz de derechos y obligaciones legales."
+  ],
+  [
+    "persona natural",
+    "Hombre, mujer, individuo."
+  ],
+  [
+    "plazo",
+    "Período entre la fecha de emisión y la fecha en que se extingue un crédito."
+  ],
+  [
+    "plazo de gracia",
+    "Período durante el cual están en vigencia las coberturas de la póliza , aunque no se hayan pagado las primas correspondientes. Por lo general es un mes a partir de la fecha de vencimiento de pago de prima . Es un plazo que concede el asegurador al contratante ."
+  ],
+  [
+    "plusvalía",
+    "Aumento en el valor comercial de una propiedad a través del tiempo."
+  ],
+  [
+    "poder simple",
+    "Documento firmado por el representado, que autoriza a una persona a actuar en representación de otra."
+  ],
+  [
+    "poder legal",
+    "Documento firmado por el representado ante notario, que autoriza a una persona a actuar en representación de otra."
+  ],
+  [
+    "póliza",
+    "Documento que acredita y fija las condiciones pactadas en un seguro. Es el documento probatorio del contrato celebrado entre asegurador y contratante."
+  ],
+  [
+    "precio de mercado",
+    "Es el mayor precio que esta dispuesto a pagar un comprador y el mínimo precio que esta dispuesto a recibir un vendedor."
+  ],
+  [
+    "prepago",
+    "Cancelación parcial o total de una deuda en forma anticipada."
+  ],
+  [
+    "prestación",
+    "Pago o indemnización."
+  ],
+  [
+    "preevaluación",
+    "Procedimiento mediante el cual se verifican las posibilidades de endeudamiento de una persona, capacidad que viene dada por su flujo, patrimonio e historial comercial."
+  ],
+  [
+    "préstamo (anticipo)",
+    "En esta opción el asegurador (compañía de seguros) presta dinero al contratante, por un monto máximo posible igual al valor de rescate , sin condición alguna respecto de su empleo. El seguro continúa vigente , por lo que el contratante debe seguir pagando la prima y además pagar la deuda contraída (préstamo) en la forma que hayan determinado las partes en el contrato de préstamo."
+  ],
+  [
+    "prima",
+    "Cantidad que cobra el asegurador por la prestación que otorga a través de una póliza . Es el precio que debe pagar el contratante por el seguro que contrata. Puede ser pagado de distintas formas (de una sola vez, mensualmente, anualmente, etc.), según lo convenido entre las partes."
+  ],
+  [
+    "prima básica",
+    "Valor referencial que se determina en cada plan, en función del capital asegurado, las coberturas contratadas, la edad y sexo del asegurado. Es única para un determinado plan y para toda la vigencia del mismo."
+  ],
+  [
+    "prima neta abonada",
+    "Es aquella fracción de la prima recaudada que aumenta el valor póliza, después de aplicar los descuentos que correspondan."
+  ],
+  [
+    "prima nivelada",
+    "Prima constante (fija, de un mismo valor) que se paga periódicamente, durante todo el período de vigencia del seguro (o durante un período menor de tiempo si así se acordara). Permanece inalterable durante toda la vigencia del contrato."
+  ],
+  [
+    "prima para seguro de renta vitalicia",
+    "Son los recursos que se traspasan desde la Cuenta de Capitalización Individual del afiliado a una Compañía de Seguros, cuando éste contrata una pensión de renta vitalicia"
+  ],
+  [
+    "prima proyectada",
+    "Monto que planea pagar el contratante de la póliza. Por ejemplo planea pagar en forma periódica una prima de $ 20.000 al año."
+  ],
+  [
+    "prima recaudada",
+    "Corresponden a las primas que efectivamente ha pagado el contratante o cliente a la compañía."
+  ],
+  [
+    "prima única",
+    "Pago anticipado de una sola vez, del costo total de un seguro."
+  ],
+  [
+    "probabilidad",
+    "Característica de un suceso del que existen razones para creer que se realizará."
+  ],
+  [
+    "promesa de compraventa",
+    "Contrato mediante el cual una parte se compromete a vender y otra se compromete a comprar un determinado bien raíz, estipulando, plazo para materializar la compraventa y multas en caso de desistimiento. Usualmente, tanto el vendedor como el comprador dejan una garantía."
+  ],
+  [
+    "propuesta",
+    "Formulario para solicitar la contratación de un seguro. A través de su estudio, el asegurador aprobará o rechazará el riesgo."
+  ],
+  [
+    "prorrogar",
+    "En esta opción el asegurado no paga mas la prima . El plan de seguro original se transforma en otro sólo de protección por el mismo capital, con una duración equivalente al período que alcance a pactar, de acuerdo al monto del valor garantizado y con un tope máximo de tiempo igual al período pactado originalmente. Este es un seguro prorrogado."
+  ],
+  [
+    "reasegurar",
+    "Consiste en traspasar mediante contrato a otras compañías (compañías reaseguradoras) autorizadas para ello, parte o partes de la responsabilidad de pago de las indemnizaciones en el caso de producirse un siniestro. A pesar de lo anterior, el contrato celebrado entre el asegurador y el asegurado , y su pago, en caso de siniestro , no puede diferirse a pretexto del reaseguro ."
+  ],
+  [
+    "refechar",
+    "Volver a poner fecha. Característica de algunas pólizas de poder reiniciar su vigencia , cambiando las fechas de inicio y término de dicha vigencia ."
+  ],
+  [
+    "refinanciamiento",
+    "Es cuando un crédito extingue otro crédito."
+  ],
+  [
+    "reglamento de copropiedad",
+    "Estatuto que establece los bienes comunes, las obligaciones de los copropietarios y de la administración así como norma el funcionamiento de la comunidad."
+  ],
+  [
+    "relación carga financiera-ingreso",
+    "Es la relación porcentual entre el total de los pagos por deudas financieras (préstamos de consumo, automotrices, casas comerciales y tarjetas de crédito) sumado al dividendo del crédito hipotecario que se solicita y el ingreso verificable del cliente."
+  ],
+  [
+    "relación deuda-garantía",
+    "Es la relación porcentual entre el monto del crédito y el valor comercial de la propiedad."
+  ],
+  [
+    "relación dividendo- ingreso",
+    "Es la relación porcentual entre el total del dividendo del crédito hipotecario que se solicita y el ingreso verificable del cliente."
+  ],
+  [
+    "remuneraciones",
+    "contraprestaciones en dinero y las adicionales en especies avaluables en dinero, que percibe el trabajador por parte del empleador, a causa del contrato de trabajo."
+  ],
+  [
+    "renta temporal con renta vitalicia diferida",
+    "Es una combinación de Retiro Programado y Renta Vitalicia. El afiliado contrata con una Compañía de Segutos de Vida (asegurador) el pago de una renta mensual a contar de una fecha futura elegida por él, reteniendo en la cuenta de capitalización individual los fondos suficiente para obtener del Fondo una renta temporal durante el período que medie entre las fechas de selección de la opción y la fecha en que la renta vitalicia entrará en vigencia.\nEs aquella modalidad de pensión en que se contrata el pago de una renta mensual con una Compañía de Seguros -Renta Vitalicia Diferida- a contar de una fecha futura preestablecida, reteniendo en la Cuenta de Capitalización Individual los fondos suficientes para obtener por parte de la AFP el pago de una pensión mensual -Renta Temporal- por el período que media entre la celebración de este contrato y la fecha preestablecida. La Compañía se compromete al pago de una pensión mensual, fija en UF, desde la fecha preestablecida en el contrato hasta la fecha de fallecimiento del afiliado, y el pago de pensiones de sobrevivencia a los beneficiarios."
+  ],
+  [
+    "renta vitalicia (inmediata)",
+    "Es aquella modalidad de pensión en que se contrata el pago de una renta mensual con una Compañía de Seguros -Renta Vitalicia- a contar de la fecha del contrato. La Compañía se compromete al pago de una pensión mensual, fija en UF, desde la fecha en que se suscribe el contrato hasta la fecha de fallecimiento del afiliado, y al pago de pensiones de sobrevivencia a los beneficiarios."
+  ],
+  [
+    "renta vitalicia garantizada",
+    "Es una Renta Vitalicia Inmediata o Diferida, que asegura el pago de la pensión contratada por el afiliado a los beneficiarios y, no existiendo éstos, a los herederos en caso de que el afiliado fallezca antes de cumplirse el período que se garantiza."
+  ],
+  [
+    "rentabilidad obtenida",
+    "Corresponde a la rentabilidad mensual. Para obtenerla se multiplica la tasa correspondiente a la modalidad de inversión seleccionada por el contratante (renta fija o mixta) por el valor póliza del mes anterior. Ingresa a la cuenta aumentando el valor póliza."
+  ],
+  [
+    "repactar",
+    "Es cuando se paga un crédito por medio de otro préstamo utilizando el mismo bien raíz como garantía."
+  ],
+  [
+    "reparación o mejoras",
+    "Estructura incorporada como una mejora permanente a la propiedad que aumenta el valor y la vida útil del inmueble."
+  ],
+  [
+    "rescatar",
+    "Cuando la póliza ha acumulado valores garantizados y el asegurado no desea seguir asegurado, puede cobrar el monto acumulado en los valores garantizados. A este monto se le llama valor de rescate ."
+  ],
+  [
+    "rescates parciales",
+    "Retiros realizables sobre el valor póliza, a petición expresa del contratante. Los rescates parciales salen de la cuenta disminuyendo el valor póliza."
+  ],
+  [
+    "rescate total",
+    "Se realiza a solicitud del contratante e implica el término del seguro. El cargo por rescate total depende de la vigencia de la póliza y de la prima básica ."
+  ],
+  [
+    "rescición",
+    "Acción de anular."
+  ],
+  [
+    "reserva",
+    "Ahorro, depósito, provisión, repuesto."
+  ],
+  [
+    "reserva matemática (del plan)",
+    "Los planes de seguros que cobran primas niveladas, generan excedentes en los primeros años del plan, a este ahorro se le llama reserva matemática y se deben guardar para hacer frente al valor que se cobrará de menos en la segunda mitad del período. reserva matamática (de la compañía). \nCorresponden al exceso de primas puras cobradas sobre los siniestros pagados, o sea, corresponde a fondos acumulados menos gastos."
+  ],
+  [
+    "reticencia",
+    "Omisión voluntaria de circunstancias conocidas por el asegurado, aún hechas de buena fe."
+  ],
+  [
+    "retiro programado",
+    "Es la modalidad de pensión en que se mantienen los ahorros previsionales en la AFP y, por lo tanto, siguen ganando la rentabilidad del fondo de pensiones. Si el afiliado fallece y no hay beneficiarios de pensión, este dinero se entrega a sus herederos. En esta modalidad las pensiones se recalculan anualmente y se expresan en UF."
+  ],
+  [
+    "retiro programado sin ceder el bono de reconocimiento",
+    "Es una opción que se ofrece a los afiliados que se pensionan por vejez anticipada, para hacer efectiva su pensión. Esta consiste en financiar la pensión de vejez anticipada utilizando sólo el saldo de la Cuenta de Capitalización Individual, sin ceder el Bono de Reconocimiento, el que se liquida sólo una vez que el afiliado cumple la edad legal para pensionarse por vejez."
+  ],
+  [
+    "riesgo",
+    "Peligro potencial a que estamos expuestos. Corresponde a cada una de las contingencias que cubre un contrato de seguros."
+  ],
+  [
+    "saldar",
+    "Es una opción a través de la cual el asegurado no paga más primas, pero sigue asegurado hasta el final de la vigencia del contrato firmado, aunque por un capital menor. Esto se llama Seguro Saldado y se aplica a seguros con valores garantizados."
+  ],
+  [
+    "saldo cuenta de capitalización individual",
+    "Valor del monto que un trabajador ha acumulado a una fecha determinada en la cuenta de capitalización individual."
+  ],
+  [
+    "saldo insoluto",
+    "Monto del crédito no cancelado, incluye intereses."
+  ],
+  [
+    "saldo insoluto del capital",
+    "Monto del crédito no cancelado, excluye intereses."
+  ],
+  [
+    "seguro de incendio",
+    "Seguro general que protege a la propiedad en caso de incendio ordinario y causas naturales."
+  ],
+  [
+    "seguro de incendio con adicional de sismo",
+    "Seguro general que protege a la propiedad en caso de incendio ordinario, incendio por sismo y causas naturales."
+  ],
+  [
+    "selección modalidad de pensión",
+    "Es el documento que suscribe el afiliado o sus beneficiarios, que les permite optar por alguna de las cuatro modalidades de pensión establecidas en la Ley."
+  ],
+  [
+    "sistema previsional",
+    "Se refiere al sistema que regula el manejo de las pensiones de Vejez, Invalidez y Sobrevivencia. Actualmente en Chile, se basa en la capitalización individual de cada cotizante, la que se efectúa en las entidades privadas A.F.P."
+  ],
+  [
+    "solicitante",
+    "Debe ser una persona natural, mayor de edad sin impedimentos legales para ejercer actos comerciales."
+  ],
+  [
+    "solicitud de crédito",
+    "Formulario que debe completar el cliente con su estado patrimonial, financiero e indicar las características de la propiedad y el monto del crédito."
+  ],
+  [
+    "solvencia",
+    "Capacidad para pagar deudas."
+  ],
+  [
+    "super-intendencia",
+    "Entidad estatal a cargo de la que está la dirección superior, el control y la supervisión de determinada actividad a nivel nacional. En el caso del negocio de los seguros, es la Superintendencia de Valores y Seguros."
+  ],
+  [
+    "seguro de invalidez y sobrevivencia",
+    "Es un seguro que la AFP debe contratar con una Compañía de Seguros de Vida (Asegurador), con el fin de garantizar pagos de pensiones en caso de invalidez o muerte de uno de sus afiliados."
+  ],
+  [
+    "seguro prorrogado",
+    "El asegurado en esta opción no paga más prima; el plan original se transforma en otro distinto de menor tiempo de vigencia (por lo tanto el nuevo seguro es siempre temporal) pero con el mismo capital contratado originalmente."
+  ],
+  [
+    "seguro saldado",
+    "Es una opción a través de la cual el asegurado no paga más primas, pero sigue asegurado hasta el final de la vigencia del contrato firmado, aunque por un capital menor. Esto se llama Seguro Saldado."
+  ],
+  [
+    "seguro vida",
+    "Seguro destinado a indemnizar los daños económicos por pérdida de la vida."
+  ],
+  [
+    "seguros generales",
+    "Seguros destinados a indemnizar los daños a las cosas o bienes."
+  ],
+  [
+    "siniestro",
+    "Daño, destrucción o pérdida que sufren las personas o la propiedad por causa de muerte, incendio, naufragio, etc., y que hace entrar en acción la prestación comprometida por el asegurador."
+  ],
+  [
+    "sometimiento",
+    "Presentación de la propuesta a la compañía aseguradora, dando así inicio a la tramitación de un contrato de seguro."
+  ],
+  [
+    "seguro",
+    "Contrato mediante el cual una persona natural o jurídica , adquiere en una Compañía aseguradora, el derecho a recibir de ésta una determinada prestación que lo indemnice de pérdidas por daño o perjuicios, que se produzcan dentro de los límites y condiciones prefijados en dicho contrato. A cambio de esto, deberá pagar por la prestación un precio llamado prima."
+  ],
+  [
+    "T.I.P.",
+    "Tasa de interés promedio de captación para operaciones reajustables entre 90 y 365 días."
+  ],
+  [
+    "tablas estadísticas",
+    "Tablas que agrupan metódicamente todos los hechos que se prestan a evaluación numérica. Sirven de base para estudiar la frecuencia y magnitud de los riesgos a asegurar."
+  ],
+  [
+    "tabla de morbilidad",
+    "Tablas que contienen información relativa a la frecuencia de presentación de cierto tipo de enfermedades en determinados grupos de personas (agrupados por edad, sexo, ocupación u otros factores)."
+  ],
+  [
+    "tablas de mortalidad",
+    "Tablas que contienen información relativa a estadísticas de muerte para determinados grupos de personas (agrupados por edad, sexo, deportes, etc.)."
+  ],
+  [
+    "tasa de interés",
+    "Costo de un crédito. tasa de interés fija Es aquella que no varia durante la vigencia del crédito."
+  ],
+  [
+    "tasa de interés máxima legal",
+    "Cota superior que puede alcanzar la tasa de interés. Es fijada por el Banco Central y la trasgrerción a este límite está penado por la ley."
+  ],
+  [
+    "tasa de interés variable",
+    "Es aquella que se modifica de acuerdo a una base preestablecida, durante la vigencia del crédito."
+  ],
+  [
+    "tasa TAB",
+    "Tasa asociación de bancos, equivale al costo de fondos promedio del sistema financiero para operaciones reajustables en UF."
+  ],
+  [
+    "tasa TIP",
+    "Tasa de interés promedio, equivale al promedio de captación que ofrecen las Entidades Financieras."
+  ],
+  [
+    "tasa TIR",
+    "Tasa de interés de referencia, equivale al mínimo a la cual los Bancos debieran estar dispuestos a prestar sus recursos."
+  ],
+  [
+    "tasación",
+    "Es una aproximación al valor comercial de la propiedad, realizada por un tasador profesional y calificado."
+  ],
+  [
+    "transacción del bono de reconocimiento",
+    "Venta del Bono de Reconocimiento en el mercado secundario formal, con el fin de ingresar lo que se recaude en la cuenta de capitalización individual, para financiar o anticipar la pensión de vejez."
+  ],
+  [
+    "títulos",
+    "Documentos legales que certifican que una persona es propietaria de un determinado bien raíz y este puede ser transferido e hipotecado."
+  ],
+  [
+    "unidad de fomento",
+    "Unidad económica que se reajusta diariamente en base a la variación que experimenta el I.P.C. (índice de precios al consumidor)."
+  ],
+  [
+    "valores garantizados",
+    "Se denomina así a aquella parte de las reservas matemáticas, de un plan de seguro de vida, que pueden ser utilizados por el asegurado, después de una determinada cantidad de años de vigencia de la póliza. Se constituye en un ahorro. Puede ser usado para rescatar, saldar o prorrogar la póliza o pedir un préstamo."
+  ],
+  [
+    "valor póliza",
+    "En los seguros flexibles con componente de ahorro (por ejemplo en nuestro Vida Activa), corresponde al saldo de la cuenta sobre la cual se ingresan o deducen valores y que es conocido como ahorro."
+  ],
+  [
+    "vencimiento",
+    "Fecha pactada para la finalización de un contrato."
+  ],
+  [
+    "verificación de depósitos",
+    "Documento emitido por una Institución Financiera acreditando que el solicitante mantiene un determinado monto en inversiones."
+  ],
+  [
+    "verificación laboral",
+    "Documento emitido por el empleador del solicitante indicando su antigüedad, cargo y salario."
+  ],
+  [
+    "Verificación de domicilio",
+    "Confirmación de la residencia que el solicitante ha indicado como su residencia permanente."
+  ],
+  [
+    "vigencia",
+    "Cualidad de un contrato, ley, ordenanza, acuerdo o costumbre que se encuentran en vigor."
+  ],
+  [
+    "violación de contrato",
+    "Incumplimiento de parte o de la totalidad de las cláusulas y obligaciones de un contrato."
+  ]
 ];
 
 // Merge duplicate terms
@@ -501,3 +1375,5 @@ renderTerms();
 <script src="shared-nav.js"></script>
 </body>
 </html>
+
+
